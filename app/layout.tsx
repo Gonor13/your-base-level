@@ -23,10 +23,13 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <head>
-        {/* Base App ID */}
+        {/* Base App ID - ОБЯЗАТЕЛЬНО */}
         <meta name="base:app_id" content="697845b888e3bac59cf3dab8" />
         
-        {/* ОБЯЗАТЕЛЬНЫЕ МЕТАТЕГИ ДЛЯ BASE EMBEDS */}
+        {/* Farcaster Mini App - ЗАПУСК МИНИ-ПРИЛОЖЕНИЯ ВНУТРИ */}
+        <meta name="fc:miniapp" content='{"version":"1","imageUrl":"https://your-base-level.vercel.app/preview.png","button":{"title":"Open Base Level","action":{"type":"launch_miniapp","name":"Your Base Level","url":"https://your-base-level.vercel.app","splashImageUrl":"https://your-base-level.vercel.app/splash.png","splashBackgroundColor":"#0052FF"}}}' />
+        
+        {/* Farcaster Frame - для постов */}
         <meta name="fc:frame" content="vNext" />
         <meta name="fc:frame:image" content="https://your-base-level.vercel.app/preview.png" />
         <meta name="fc:frame:button:1" content="Open App" />
