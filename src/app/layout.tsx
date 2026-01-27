@@ -1,9 +1,6 @@
 ﻿import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
-import { headers } from 'next/headers'
-import { cookieToInitialState } from 'wagmi'
-import { config } from '@/config'
 import Web3ModalProvider from '@/context'
 import Header from '@/components/Header'
 import { Toaster } from 'react-hot-toast'
@@ -57,13 +54,10 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const headersList = headers()
-  const initialState = cookieToInitialState(config, headersList.get('cookie'))
-
   return (
     <html lang="en">
       <body className={`${inter.className} bg-black text-white min-h-screen`}>
-        <Web3ModalProvider initialState={initialState}>
+        <Web3ModalProvider>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <Header />
             <main className="py-8">{children}</main>
