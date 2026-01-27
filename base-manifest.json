@@ -1,0 +1,12 @@
+﻿{
+  "id": "your-base-level",
+  "name": "Your Base Level",
+  "description": "Discover your status in the Base ecosystem. Calculate your unique Base Level and mint it as an NFT.",
+  "icon_url": "https://your-base-level.vercel.app/icon.png",
+  "image_url": "https://your-base-level.vercel.app/preview.png",
+  "category": "nft",
+  "app_url": "https://your-base-level.vercel.app",
+  "call_to_action": "Connect Wallet",
+  "chain_ids": [8453],
+  "app_mode": "external"
+}
