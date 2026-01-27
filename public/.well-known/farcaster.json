@@ -6,5 +6,10 @@
   "splashImageUrl": "https://your-base-level.vercel.app/splash.png",
   "splashBackgroundColor": "#0052FF",
   "primaryCategory": "utility",
-  "tags": ["base", "nft", "level", "crypto", "status"]
+  "tags": ["base", "nft", "level", "crypto", "status"],
+  "accountAssociation": {
+    "header": "eyJmaWQiOjMzODQ1MSwidHlwZSI6ImN1c3RvZHkiLCJrZXkiOiIweDc4NDRENDM0NzMzOTM1OTRENWQwM2NkZDUzRDU0RDdGY0RmMzk5RTUifQ",
+    "payload": "eyJkb21haW4iOiJ5b3VyLWJhc2UtbGV2ZWwudmVyY2VsLmFwcCJ9",
+    "signature": "+qzD8+JRFUXCBQhXrcgdfyMnXek8Ka+zsR7ZsvxOw+BlSqoGj6UGsZ74wNHH4UOJ0p+of1Ucxnw+CuHtn6tuMxs="
+  }
 }
