@@ -1,3 +1,6 @@
-﻿*
+﻿# Игнорируем все кроме public/
+*
 !public/
-public/_next/
+!package.json
+!README.md
+!.gitignore

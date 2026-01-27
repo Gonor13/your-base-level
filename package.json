@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "echo 'Static site - no build step required'"
+    "dev": "echo 'Static site: open public/index.html in browser'",
+    "build": "echo 'No build step for static site'",
+    "start": "echo 'Static site deployed on Vercel'"
   },
   "engines": {
     "node": ">=18"
