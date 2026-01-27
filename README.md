@@ -1,36 +1,55 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Your Base Level 🔵
+
+Discover your status in the Base ecosystem with this NFT dApp.
+
+## Features
+
+- 📊 **Analyze Activity** - View your Base network statistics
+- 🎯 **Calculate Level** - Get your unique Base Level (1-10)
+- 🎨 **Dynamic NFT** - Mint a personalized NFT with your level and address
+- 💰 **Gas Only** - Pay only network gas fees for minting
+- 📱 **Share** - Share your level with friends
+
+## Demo
+
+[Live Demo](https://your-base-level.vercel.app)
+
+## Tech Stack
+
+- **Frontend**: Next.js 16, React 19, TypeScript
+- **Styling**: Tailwind CSS
+- **Blockchain**: Ethers.js v6
+- **Smart Contract**: Solidity (Base Mainnet)
+- **Animations**: Framer Motion
+
+## Smart Contract
+
+**Address**: `0xa61878Cd14f87F22623A44Cf54D8F2F0a0E6c11a`
+
+**Network**: Base Mainnet
+
+**Features**:
+- ERC-721 NFT standard
+- Dynamic metadata (unique image for each level + address)
+- One mint per wallet
+- Gas-efficient
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18+
+- MetaMask or Base Wallet
+- ETH on Base network
+
+### Installation
 
 ```bash
+# Clone the repository
+git clone https://github.com/gonor13/your-base-level.git
+
+# Install dependencies
+npm install
+
+# Run development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
