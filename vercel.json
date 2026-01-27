@@ -1,19 +1,6 @@
 ﻿{
-  "rewrites": [
-    {
-      "source": "/",
-      "destination": "/index.html"
-    }
-  ],
-  "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "no-store, must-revalidate"
-        }
-      ]
-    }
-  ]
+  "version": 2,
+  "buildCommand": null,
+  "outputDirectory": "public",
+  "framework": null
 }

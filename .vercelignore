@@ -1,6 +1,3 @@
-﻿node_modules
-.next
-src
-*.ts
-*.tsx
-next.config.*
+﻿*
+!public/
+public/_next/

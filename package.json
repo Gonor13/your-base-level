@@ -1,9 +1,11 @@
 ﻿{
   "name": "your-base-level",
   "version": "1.0.0",
+  "private": true,
   "scripts": {
-    "dev": "echo 'Static site - no dev server needed'",
-    "build": "echo 'Static site - no build needed'",
-    "start": "echo 'Static site deployed on Vercel'"
+    "build": "echo 'Static site - no build step required'"
+  },
+  "engines": {
+    "node": ">=18"
   }
 }
