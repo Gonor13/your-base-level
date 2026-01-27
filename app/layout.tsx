@@ -56,12 +56,15 @@ export default function RootLayout({
         {/* Base App ID */}
         <meta name="base:app_id" content="697845b888e3bac59cf3dab8" />
         
-        {/* Farcaster Frame */}
+        {/* Farcaster Frame - ОБЯЗАТЕЛЬНО ДЛЯ EMBEDS */}
         <meta name="fc:frame" content="vNext" />
         <meta name="fc:frame:image" content="https://your-base-level.vercel.app/preview.png" />
         <meta name="fc:frame:button:1" content="Open App" />
         <meta name="fc:frame:button:1:action" content="link" />
         <meta name="fc:frame:button:1:target" content="https://your-base-level.vercel.app" />
+        
+        {/* Важно: добавляем webhookUrl в метатеги */}
+        <meta name="webhookUrl" content="https://your-base-level.vercel.app/api/webhook" />
         
         {/* Viewport */}
         <meta name="viewport" content="width=device-width, initial-scale=1" />
