@@ -1,29 +1,20 @@
 ﻿{
-  "accountAssociation": {
-    "header": "eyJmaWQiOjMzODQ1MSwidHlwZSI6ImN1c3RvZHkiLCJrZXkiOiIweDc4NDRENDM0NzMzOTM1OTRENWQwM2NkZDUzRDU0RDdGY0RmMzk5RTUifQ",
-    "payload": "eyJkb21haW4iOiJ5b3VyLWJhc2UtbGV2ZWwudmVyY2VsLmFwcCJ9",
-    "signature": "+qzD8+JRFUXCBQhXrcgdfyMnXek8Ka+zsR7ZsvxOw+BlSqoGj6UGsZ74wNHH4UOJ0p+of1Ucxnw+CuHtn6tuMxs="
-  },
-  "miniapp": {
-    "version": "1",
-    "name": "Your Base Level",
-    "homeUrl": "https://your-base-level.vercel.app",
-    "webhookUrl": "https://your-base-level.vercel.app/api/webhook",
-    "iconUrl": "https://your-base-level.vercel.app/icon.png",
-    "splashImageUrl": "https://your-base-level.vercel.app/preview.png",
-    "splashBackgroundColor": "#0052FF",
-    "subtitle": "Discover your Base status",
-    "description": "Calculate your unique Base Level (1-10) based on activity and mint it as an NFT.",
-    "screenshotUrls": [
-      "https://your-base-level.vercel.app/preview.png"
-    ],
-    "primaryCategory": "art-creativity",
-    "tags": ["base", "nft", "level", "status", "crypto"],
-    "heroImageUrl": "https://your-base-level.vercel.app/preview.png",
-    "tagline": "What's your Base Level?",
-    "ogTitle": "Your Base Level",
-    "ogDescription": "Discover your status in the Base ecosystem",
-    "ogImageUrl": "https://your-base-level.vercel.app/preview.png",
-    "noindex": false
-  }
+  "version": "1",
+  "name": "Your Base Level",
+  "homeUrl": "https://your-base-level.vercel.app",
+  "webhookUrl": "https://your-base-level.vercel.app/api/webhook",
+  "iconUrl": "https://your-base-level.vercel.app/icon.png",
+  "splashImageUrl": "https://your-base-level.vercel.app/splash.png",
+  "splashBackgroundColor": "#0052FF",
+  "subtitle": "Discover your Base status",
+  "description": "Calculate your unique Base Level (1-10) based on activity and mint it as an NFT.",
+  "screenshotUrls": ["https://your-base-level.vercel.app/preview.png"],
+  "primaryCategory": "art-creativity",
+  "tags": ["base", "nft", "level", "status", "crypto"],
+  "heroImageUrl": "https://your-base-level.vercel.app/preview.png",
+  "tagline": "What's your Base Level?",
+  "ogTitle": "Your Base Level",
+  "ogDescription": "Discover your status in the Base ecosystem",
+  "ogImageUrl": "https://your-base-level.vercel.app/preview.png",
+  "noindex": false
 }
