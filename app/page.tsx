@@ -12,17 +12,17 @@ const abi = [
 ]
 
 export default function Home() {
-  const [address, setAddress] = useState(null)
-  const [level, setLevel] = useState(null)
+  const [address, setAddress] = useState<string | null>(null)
+  const [level, setLevel] = useState<number | null>(null)
   const [loading, setLoading] = useState(false)
   const [minting, setMinting] = useState(false)
-  const [error, setError] = useState(null)
-  const [provider, setProvider] = useState(null)
-  const [stats, setStats] = useState(null)
+  const [error, setError] = useState<string | null>(null)
+  const [provider, setProvider] = useState<ethers.BrowserProvider | null>(null)
+  const [stats, setStats] = useState<any>(null)
 
   useEffect(() => {
-    if (typeof window !== 'undefined' && window.ethereum) {
-      setProvider(new ethers.BrowserProvider(window.ethereum))
+    if (typeof window !== 'undefined' && (window as any).ethereum) {
+      setProvider(new ethers.BrowserProvider((window as any).ethereum))
     } else {
       setError('⚠️ Install MetaMask or Base Wallet')
     }
@@ -42,10 +42,8 @@ export default function Home() {
       const addr = await signer.getAddress()
       setAddress(addr)
 
-      // Генерируем реалистичные данные
       const hash = addr.toLowerCase().split('0x')[1].split('').reduce((acc, c) => acc + c.charCodeAt(0), 0)
       
-      // Статистика
       const txCount = Math.min(5000, Math.floor(hash * 0.7))
       const activeDays = Math.min(365, Math.floor(hash * 0.3))
       const uniqueContracts = Math.min(100, Math.floor(hash * 0.2))
@@ -58,12 +56,10 @@ export default function Home() {
       const longestStreak = Math.min(60, Math.floor(hash * 0.04))
       const currentStreak = Math.min(30, Math.floor(hash * 0.03))
       
-      // Данные для топ-баннера
       const totalUsers = 24347935
       const betterThan = Math.floor(totalUsers * 0.9511)
       const topPercent = 4.89
 
-      // Сохраняем данные
       setStats({
         txCount,
         activeDays,
@@ -81,7 +77,6 @@ export default function Home() {
         topPercent
       })
 
-      // Расчет уровня
       const score = 
         Math.min(Math.log10(txCount + 1), 3) * 3 +
         Math.min(Math.log10(activeDays + 1), 3) * 2 +
@@ -92,7 +87,7 @@ export default function Home() {
       setLevel(lvl)
 
       setLoading(false)
-    } catch (err) {
+    } catch (err: any) {
       setError(err.message || 'Connection failed')
       setLoading(false)
     }
@@ -116,7 +111,7 @@ export default function Home() {
       
       alert('✅ Minted! Check your wallet on BaseScan.')
       setMinting(false)
-    } catch (err) {
+    } catch (err: any) {
       console.error('Mint error:', err)
       setError(err.message || 'Mint failed. You may have already minted.')
       setMinting(false)
@@ -130,7 +125,6 @@ export default function Home() {
     alert('✅ Copied! Share with friends!')
   }
 
-  // Генерация данных для графика активности
   const generateActivityData = () => {
     const months = ['Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan']
     return months.map(month => ({
@@ -159,23 +153,19 @@ export default function Home() {
     
     return (
       <div className="min-h-screen flex flex-col bg-gradient-to-br from-[#0A0A0A] to-[#121212] p-6">
-        {/* Топ-баннер как в примере */}
         <div className="mb-6">
           <div className="bg-gradient-to-r from-[#6366F1] to-[#8B5CF6] rounded-2xl p-4 mb-4">
             <div className="text-center">
-              <h2 className="text-3xl font-bold text-white">Your wallet is in TOP {stats.topPercent}%</h2>
+              <h2 className="text-3xl font-bold text-white">Your wallet is in TOP ' + stats.topPercent + '%</h2>
               <p className="text-xl text-white/80">
-                and better than {stats.betterThan.toLocaleString()} of {stats.totalUsers.toLocaleString()} participants
+                and better than ' + stats.betterThan.toLocaleString() + ' of ' + stats.totalUsers.toLocaleString() + ' participants
               </p>
             </div>
           </div>
         </div>
 
-        {/* Основной контент */}
         <div className="flex-1 flex flex-col lg:flex-row gap-6">
-          {/* Левая колонка */}
           <div className="lg:w-1/3">
-            {/* График активности */}
             <div className="bg-[#1A1A1A] rounded-2xl p-4 mb-6">
               <h3 className="text-xl font-bold text-white mb-3">Activity</h3>
               
@@ -186,7 +176,7 @@ export default function Home() {
                       <div 
                         className="h-full rounded-t"
                         style={{ 
-                          height: `${item.level * 25}px`,
+                          height: (item.level * 25) + 'px',
                           backgroundColor: item.level === 1 ? '#6B7280' : item.level === 2 ? '#9CA3AF' : '#0052FF'
                         }}
                       ></div>
@@ -207,12 +197,11 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Детальная статистика */}
             <div className="grid grid-cols-2 gap-4">
               <div className="bg-[#1A1A1A] rounded-2xl p-4">
                 <div className="text-center">
                   <div className="text-2xl font-bold text-[#0052FF] mb-1">{stats.txCount.toLocaleString()}</div>
-                  <div className="text-gray-400">Transactions on Base</div>
+                  <div className="text-gray-400">Transactions on Ethereum & Base</div>
                 </div>
               </div>
               <div className="bg-[#1A1A1A] rounded-2xl p-4">
@@ -248,10 +237,8 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Правая колонка */}
           <div className="lg:w-2/3">
             <div className="bg-[#1A1A1A] rounded-2xl p-6">
-              {/* Центральный блок с уровнем */}
               <div className="text-center mb-6">
                 <div className="w-64 h-64 mx-auto bg-[#0A0A0A] border-4 border-[#0052FF]/30 rounded-2xl flex items-center justify-center mb-4">
                   <span className="text-[180px] font-bold text-[#0052FF]">{level}</span>
@@ -266,7 +253,6 @@ export default function Home() {
                 </p>
               </div>
 
-              {/* Статистика */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                 <div className="bg-[#1A1A1A] rounded-2xl p-4">
                   <h3 className="text-xl font-bold text-white mb-3">Interactions</h3>
@@ -295,7 +281,6 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Кнопки */}
               <div className="flex flex-col gap-3 mb-4">
                 <button 
                   onClick={handleShare}
