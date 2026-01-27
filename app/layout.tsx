@@ -42,6 +42,9 @@ export const metadata = {
     description: 'Discover your status in the Base ecosystem',
     images: ['https://your-base-level.vercel.app/preview.png'],
   },
+  other: {
+    'base:app_id': '697845b888e3bac59cf3dab8',
+  },
 }
 
 export default function RootLayout({
@@ -55,7 +58,7 @@ export default function RootLayout({
         {/* Base App ID */}
         <meta name="base:app_id" content="697845b888e3bac59cf3dab8" />
         
-        {/* Farcaster Frame - vNext format (REQUIRED) */}
+        {/* Farcaster Frame */}
         <meta name="fc:frame" content="vNext" />
         <meta name="fc:frame:image" content="https://your-base-level.vercel.app/preview.png" />
         <meta name="fc:frame:button:1" content="Open App" />
@@ -67,6 +70,8 @@ export default function RootLayout({
         <meta property="og:description" content="Discover your status in the Base ecosystem" />
         <meta property="og:image" content="https://your-base-level.vercel.app/preview.png" />
         <meta property="og:url" content="https://your-base-level.vercel.app" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
         
         {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
