@@ -56,7 +56,7 @@ export default function RootLayout({
         {/* Base App ID */}
         <meta name="base:app_id" content="697845b888e3bac59cf3dab8" />
         
-        {/* Farcaster Frame - REQUIRED */}
+        {/* Farcaster Frame */}
         <meta name="fc:frame" content="vNext" />
         <meta name="fc:frame:image" content="https://your-base-level.vercel.app/preview.png" />
         <meta name="fc:frame:button:1" content="Open App" />
