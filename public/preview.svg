@@ -1,13 +1,7 @@
 ﻿<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
   <rect width="1200" height="630" fill="#0A0A0A"/>
-  <circle cx="600" cy="315" r="200" fill="#0052FF" opacity="0.1"/>
-  <text x="600" y="280" font-family="Arial, sans-serif" font-size="100" font-weight="bold" fill="#0052FF" text-anchor="middle">
-    Your Base Level
-  </text>
-  <text x="600" y="400" font-family="Arial, sans-serif" font-size="60" fill="white" text-anchor="middle">
-    Discover your status
-  </text>
-  <text x="600" y="480" font-family="Arial, sans-serif" font-size="40" fill="#666" text-anchor="middle">
-    Connect • Calculate • Mint
-  </text>
+  <circle cx="600" cy="315" r="250" fill="#0052FF" opacity="0.1"/>
+  <text x="600" y="280" font-family="Arial, sans-serif" font-size="110" font-weight="bold" fill="#0052FF" text-anchor="middle">Your Base Level</text>
+  <text x="600" y="420" font-family="Arial, sans-serif" font-size="70" fill="white" text-anchor="middle">Discover your status</text>
+  <text x="600" y="520" font-family="Arial, sans-serif" font-size="50" fill="#666" text-anchor="middle">Connect • Calculate • Mint</text>
 </svg>
