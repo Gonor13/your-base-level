@@ -18,7 +18,13 @@
       "https://your-base-level.vercel.app/preview.png"
     ],
     "primaryCategory": "art-creativity",
-    "tags": ["base", "nft", "level", "status", "crypto"],
+    "tags": [
+      "base",
+      "nft",
+      "level",
+      "status",
+      "crypto"
+    ],
     "heroImageUrl": "https://your-base-level.vercel.app/preview.png",
     "tagline": "What's your Base Level?",
     "ogTitle": "Your Base Level",

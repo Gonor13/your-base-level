@@ -18,6 +18,7 @@ export const metadata = {
         type: 'image/svg+xml',
       },
     ],
+    apple: '/apple-icon.png',
   },
   openGraph: {
     title: 'Your Base Level',
@@ -42,9 +43,6 @@ export const metadata = {
     description: 'Discover your status in the Base ecosystem',
     images: ['https://your-base-level.vercel.app/preview.png'],
   },
-  other: {
-    'base:app_id': '697845b888e3bac59cf3dab8',
-  },
 }
 
 export default function RootLayout({
@@ -58,26 +56,12 @@ export default function RootLayout({
         {/* Base App ID */}
         <meta name="base:app_id" content="697845b888e3bac59cf3dab8" />
         
-        {/* Farcaster Frame */}
+        {/* Farcaster Frame - REQUIRED */}
         <meta name="fc:frame" content="vNext" />
         <meta name="fc:frame:image" content="https://your-base-level.vercel.app/preview.png" />
         <meta name="fc:frame:button:1" content="Open App" />
         <meta name="fc:frame:button:1:action" content="link" />
         <meta name="fc:frame:button:1:target" content="https://your-base-level.vercel.app" />
-        
-        {/* Open Graph */}
-        <meta property="og:title" content="Your Base Level" />
-        <meta property="og:description" content="Discover your status in the Base ecosystem" />
-        <meta property="og:image" content="https://your-base-level.vercel.app/preview.png" />
-        <meta property="og:url" content="https://your-base-level.vercel.app" />
-        <meta property="og:image:width" content="1200" />
-        <meta property="og:image:height" content="630" />
-        
-        {/* Twitter */}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Your Base Level" />
-        <meta name="twitter:description" content="Discover your status in the Base ecosystem" />
-        <meta name="twitter:image" content="https://your-base-level.vercel.app/preview.png" />
         
         {/* Viewport */}
         <meta name="viewport" content="width=device-width, initial-scale=1" />

@@ -27,15 +27,6 @@ const nextConfig = {
           },
         ],
       },
-      {
-        source: '/splash.png',
-        headers: [
-          {
-            key: 'Content-Type',
-            value: 'image/png',
-          },
-        ],
-      },
     ]
   },
 }
