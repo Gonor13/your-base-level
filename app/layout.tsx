@@ -42,6 +42,9 @@ export const metadata = {
     description: 'Discover your status in the Base ecosystem',
     images: ['https://your-base-level.vercel.app/preview.png'],
   },
+  other: {
+    'base:app_id': '697845b888e3bac59cf3dab8',
+  },
 }
 
 export default function RootLayout({
@@ -52,20 +55,36 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <head>
-        {/* Base App ID */}
+        {/* Base App ID - REQUIRED for verification */}
         <meta name="base:app_id" content="697845b888e3bac59cf3dab8" />
         
-        {/* Farcaster Mini App */}
+        {/* Open Graph - for embeds and previews */}
+        <meta property="og:title" content="Your Base Level" />
+        <meta property="og:description" content="Discover your status in the Base ecosystem" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://your-base-level.vercel.app" />
+        <meta property="og:image" content="https://your-base-level.vercel.app/preview.png" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:site_name" content="Your Base Level" />
+        
+        {/* Twitter Cards - for Twitter embeds */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Your Base Level" />
+        <meta name="twitter:description" content="Discover your status in the Base ecosystem" />
+        <meta name="twitter:image" content="https://your-base-level.vercel.app/preview.png" />
+        
+        {/* Farcaster Mini App - for launching from Farcaster */}
         <meta name="fc:miniapp" content='{"version":"1","imageUrl":"https://your-base-level.vercel.app/preview.png","button":{"title":"Open Base Level","action":{"type":"launch_miniapp","name":"Your Base Level","url":"https://your-base-level.vercel.app","splashImageUrl":"https://your-base-level.vercel.app/preview.png","splashBackgroundColor":"#0052FF"}}}' />
         
-        {/* Farcaster Frame */}
-        <meta name="fc:frame" content='{"version":"1","imageUrl":"https://your-base-level.vercel.app/preview.png","button":{"title":"Open Base Level","action":{"type":"launch_miniapp","name":"Your Base Level","url":"https://your-base-level.vercel.app","splashImageUrl":"https://your-base-level.vercel.app/preview.png","splashBackgroundColor":"#0052FF"}}}' />
+        {/* Farcaster Frame - for interactive frames */}
+        <meta name="fc:frame" content='{"version":"1","image":"https://your-base-level.vercel.app/preview.png","buttons":[{"label":"Open App","action":"link","target":"https://your-base-level.vercel.app"}]}' />
         
-        {/* Base Mini App */}
-        <meta name="base-mini-app" content="true" />
-        <meta name="base-mini-app-title" content="Your Base Level" />
-        <meta name="base-mini-app-description" content="What's your Base Level?" />
-        <meta name="base-mini-app-color" content="#0052FF" />
+        {/* Viewport */}
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        
+        {/* Favicon */}
+        <link rel="icon" href="/icon.png" />
       </head>
       <body className="bg-black">{children}</body>
     </html>

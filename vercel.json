@@ -1,13 +1,12 @@
-﻿{
-  "buildCommand": "npm run build",
-  "outputDirectory": ".next",
-  "routes": [
+{
+  "rewrites": [
     {
-      "handle": "filesystem"
+      "source": "/.well-known/farcaster.json",
+      "destination": "/.well-known/farcaster.json"
     },
     {
-      "src": "/base-manifest.json",
-      "dest": "/base-manifest.json"
+      "source": "/.well-known/base-mini-app.json",
+      "destination": "/.well-known/base-mini-app.json"
     }
   ]
 }
