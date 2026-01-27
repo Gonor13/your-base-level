@@ -1,12 +1,19 @@
-{
+﻿{
   "rewrites": [
     {
-      "source": "/.well-known/farcaster.json",
-      "destination": "/.well-known/farcaster.json"
-    },
+      "source": "/",
+      "destination": "/index.html"
+    }
+  ],
+  "headers": [
     {
-      "source": "/.well-known/base-mini-app.json",
-      "destination": "/.well-known/base-mini-app.json"
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, must-revalidate"
+        }
+      ]
     }
   ]
 }

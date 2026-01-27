@@ -1,0 +1,141 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <!-- ==== CRITICAL FOR BASE MINI APP ==== -->
+    <meta name="eth:chain" content="base">
+    <meta name="eth:network" content="8453">
+    <meta name="base:app_id" content="697845b888e3bac59cf3dab8">
+    
+    <!-- Farcaster Frame -->
+    <meta property="fc:frame" content="vNext">
+    <meta property="fc:frame:image" content="https://your-base-level.vercel.app/preview.png">
+    <meta property="fc:frame:button:1" content="Open App">
+    <meta property="fc:frame:button:1:action" content="link">
+    <meta property="fc:frame:button:1:target" content="https://your-base-level.vercel.app">
+    
+    <!-- OpenGraph -->
+    <meta property="og:title" content="Your Base Level">
+    <meta property="og:description" content="Discover your status in the Base ecosystem. Mint your unique Base Level NFT.">
+    <meta property="og:image" content="https://your-base-level.vercel.app/preview.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:url" content="https://your-base-level.vercel.app">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Your Base Level">
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Your Base Level">
+    <meta name="twitter:description" content="Discover your status in the Base ecosystem. Mint your unique Base Level NFT.">
+    <meta name="twitter:image" content="https://your-base-level.vercel.app/preview.png">
+    <meta name="twitter:image:width" content="1200">
+    <meta name="twitter:image:height" content="630">
+    <meta name="twitter:site" content="@base">
+    <meta name="twitter:creator" content="@base">
+    
+    <!-- App Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="application-name" content="Your Base Level">
+    <meta name="theme-color" content="#0052FF">
+    <meta name="mobile-web-app-capable" content="yes">
+    
+    <title>Your Base Level</title>
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #000;
+            color: white;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            text-align: center;
+        }
+        .container {
+            max-width: 600px;
+        }
+        h1 {
+            font-size: 3rem;
+            background: linear-gradient(90deg, #0052FF, #00D4FF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+        .logo {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #0052FF, #3B82F6);
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+        }
+        .logo span {
+            font-size: 48px;
+            font-weight: bold;
+            color: white;
+        }
+        .cta-button {
+            background: linear-gradient(90deg, #0052FF, #0066FF);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 12px;
+            cursor: pointer;
+            margin-top: 2rem;
+            transition: transform 0.2s;
+        }
+        .cta-button:hover {
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <span>B</span>
+        </div>
+        <h1>Your Base Level</h1>
+        <p style="font-size: 1.2rem; color: #ccc; margin-bottom: 1rem;">
+            Discover your status in the Base ecosystem
+        </p>
+        <p style="color: #888; margin-bottom: 2rem;">
+            Connect wallet to calculate your unique Base Level (1-10) and mint as NFT.
+        </p>
+        
+        <div style="background: #111; padding: 1.5rem; border-radius: 12px; margin: 2rem 0;">
+            <h3 style="margin-bottom: 1rem; color: #0052FF;">✨ Features</h3>
+            <ul style="text-align: left; list-style: none;">
+                <li style="padding: 0.5rem 0;">✅ Analyze Base network activity</li>
+                <li style="padding: 0.5rem 0;">✅ Calculate your Base Level (1-10)</li>
+                <li style="padding: 0.5rem 0;">✅ Mint unique NFT with your level</li>
+                <li style="padding: 0.5rem 0;">✅ Pay only gas fees</li>
+            </ul>
+        </div>
+        
+        <button class="cta-button" onclick="alert('Connect wallet functionality')">
+            🔗 Connect Wallet
+        </button>
+        
+        <p style="margin-top: 3rem; color: #666; font-size: 0.9rem;">
+            Base Mini App | Your Base Level NFT dApp
+        </p>
+    </div>
+    
+    <script>
+        // Simple script to show meta tags are working
+        console.log('Base Level Mini App loaded');
+        console.log('Meta tags present: eth:chain, fc:frame, og:image');
+    </script>
+</body>
+</html>
