@@ -4,22 +4,24 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <!-- ==== BASE MINI APP REQUIRED TAGS ==== -->
+    <!-- ==== CRITICAL BASE TAGS ==== -->
     <meta name="eth:chain" content="base">
     <meta name="eth:network" content="8453">
     <meta name="base:app_id" content="697845b888e3bac59cf3dab8">
     
     <!-- Farcaster Frame -->
     <meta property="fc:frame" content="vNext">
-    <meta property="fc:frame:image" content="/preview.png">
-    <meta property="fc:frame:button:1" content="Open App">
+    <meta property="fc:frame:image" content="https://your-base-level.vercel.app/preview.png">
+    <meta property="fc:frame:image:aspect_ratio" content="1.91:1">
+    <meta property="fc:frame:button:1" content="Open Your Base Level">
     <meta property="fc:frame:button:1:action" content="link">
     <meta property="fc:frame:button:1:target" content="https://your-base-level.vercel.app">
+    <meta property="fc:frame:post_url" content="https://your-base-level.vercel.app/api/frame">
     
     <!-- OpenGraph -->
     <meta property="og:title" content="Your Base Level">
     <meta property="og:description" content="Discover your status in the Base ecosystem. Mint your unique Base Level NFT.">
-    <meta property="og:image" content="/preview.png">
+    <meta property="og:image" content="https://your-base-level.vercel.app/preview.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:url" content="https://your-base-level.vercel.app">
@@ -30,11 +32,19 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Your Base Level">
     <meta name="twitter:description" content="Discover your status in the Base ecosystem. Mint your unique Base Level NFT.">
-    <meta name="twitter:image" content="/preview.png">
+    <meta name="twitter:image" content="https://your-base-level.vercel.app/preview.png">
+    <meta name="twitter:image:width" content="1200">
+    <meta name="twitter:image:height" content="630">
+    <meta name="twitter:site" content="@base">
+    
+    <!-- Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="application-name" content="Your Base Level">
+    <meta name="theme-color" content="#0052FF">
     
     <title>Your Base Level</title>
     
-    <!-- Альтернативный CDN для ethers.js -->
+    <!-- Ethers.js from jsDelivr -->
     <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.min.js"></script>
     
     <style>
@@ -74,7 +84,7 @@
             -webkit-text-fill-color: transparent;
             margin-bottom: 1rem;
         }
-        .connect-btn {
+        .btn {
             background: linear-gradient(90deg, #0052FF, #0066FF);
             color: white;
             border: none;
@@ -83,7 +93,11 @@
             font-weight: bold;
             border-radius: 12px;
             cursor: pointer;
-            margin-top: 1rem;
+            margin: 0.5rem;
+            transition: transform 0.2s;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
         }
         .error {
             color: #ff4444;
@@ -91,7 +105,13 @@
             padding: 1rem;
             border-radius: 8px;
             margin: 1rem 0;
-            display: none;
+        }
+        .success {
+            color: #00ff00;
+            background: rgba(0, 255, 0, 0.1);
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
         }
     </style>
 </head>
@@ -103,54 +123,76 @@
             Discover your status in the Base ecosystem
         </p>
         
-        <div id="errorMessage" class="error"></div>
+        <div id="status" class="error" style="display:none;"></div>
         
-        <button class="connect-btn" id="connectButton" onclick="connectWallet()">
+        <button class="btn" id="connectBtn" onclick="connectWallet()">
             🔗 Connect Wallet
         </button>
         
-        <div style="background: #111; padding: 1.5rem; border-radius: 12px; margin: 2rem 0; text-align: left;">
-            <h3 style="color: #0052FF; margin-top: 0;">✨ What's Next</h3>
-            <p>After connecting wallet:</p>
-            <ul>
-                <li>1. Analyze your Base activity</li>
-                <li>2. Calculate your Base Level (1-10)</li>
-                <li>3. Mint unique NFT with your level</li>
-                <li>4. Share with friends</li>
-            </ul>
+        <div style="background: #111; padding: 1.5rem; border-radius: 12px; margin: 2rem 0;">
+            <h3 style="color: #0052FF;">🎯 Features</h3>
+            <p>• Analyze Base activity</p>
+            <p>• Calculate Level (1-10)</p>
+            <p>• Mint Dynamic NFT</p>
+            <p>• Gas only fees</p>
+            <p>• Share with friends</p>
         </div>
+        
+        <p style="color: #666; font-size: 0.9rem;">
+            Smart Contract: 0xa61878Cd14f87F22623A44Cf54D8F2F0a0E6c11a
+        </p>
     </div>
     
     <script>
-        // Проверяем загрузился ли ethers
-        if (typeof ethers === 'undefined') {
-            document.getElementById('errorMessage').textContent = 
-                'Error: ethers.js library failed to load. Please check your internet connection.';
-            document.getElementById('errorMessage').style.display = 'block';
+        // Проверяем загрузку ethers
+        window.addEventListener('load', () => {
+            if (typeof ethers === 'undefined') {
+                showStatus('⚠️ Loading wallet libraries...', 'error');
+                // Перезагружаем ethers если не загрузился
+                setTimeout(() => {
+                    if (typeof ethers === 'undefined') {
+                        showStatus('❌ Failed to load ethers.js. Please refresh.', 'error');
+                    }
+                }, 3000);
+            } else {
+                console.log('✅ ethers.js loaded');
+            }
+            
+            // Проверяем кошелек при загрузке
+            if (window.ethereum) {
+                checkConnected();
+            }
+        });
+        
+        async function checkConnected() {
+            try {
+                const accounts = await window.ethereum.request({ 
+                    method: 'eth_accounts' 
+                });
+                if (accounts.length > 0) {
+                    updateUI(accounts[0]);
+                }
+            } catch (error) {
+                console.log('No wallet connected');
+            }
         }
         
         async function connectWallet() {
-            const connectBtn = document.getElementById('connectButton');
-            const errorEl = document.getElementById('errorMessage');
-            errorEl.style.display = 'none';
+            const btn = document.getElementById('connectBtn');
+            const status = document.getElementById('status');
             
             try {
-                // Проверяем доступен ли ethers
-                if (typeof ethers === 'undefined') {
-                    throw new Error('ethers.js not loaded');
-                }
-                
-                // Проверяем наличие MetaMask/Base Wallet
                 if (!window.ethereum) {
-                    throw new Error('Please install MetaMask or Base Wallet!');
+                    throw new Error('Install MetaMask or Base Wallet');
                 }
                 
-                connectBtn.disabled = true;
-                connectBtn.textContent = 'Connecting...';
+                btn.disabled = true;
+                btn.textContent = 'Connecting...';
+                status.style.display = 'none';
                 
                 // Запрашиваем аккаунты
-                const accounts = await window.ethereum.request({ 
-                    method: 'eth_requestAccounts' 
+                const accounts = await window.ethereum.request({
+                    method: 'eth_requestAccounts'
                 });
                 
                 if (accounts.length === 0) {
@@ -159,36 +201,55 @@
                 
                 // Создаем провайдер
                 const provider = new ethers.providers.Web3Provider(window.ethereum);
-                const signer = provider.getSigner();
-                const address = await signer.getAddress();
-                const network = await provider.getNetwork();
+                const address = accounts[0];
                 
-                // Успешное подключение
-                connectBtn.textContent = `✅ ${address.substring(0,6)}...${address.substring(38)}`;
-                connectBtn.disabled = true;
-                
-                console.log('Connected:', { address, network: network.name });
+                // Обновляем UI
+                updateUI(address);
+                showStatus('✅ Wallet connected successfully!', 'success');
                 
             } catch (error) {
                 console.error('Connection error:', error);
-                errorEl.textContent = `Error: ${error.message}`;
-                errorEl.style.display = 'block';
-                connectBtn.textContent = '🔗 Connect Wallet';
-                connectBtn.disabled = false;
+                showStatus(`❌ Error: ${error.message}`, 'error');
+                btn.textContent = '🔗 Connect Wallet';
+                btn.disabled = false;
             }
         }
         
-        // Проверяем при загрузке страницы
-        window.addEventListener('load', () => {
-            if (window.ethereum) {
-                // Слушаем изменения аккаунтов
-                window.ethereum.on('accountsChanged', (accounts) => {
-                    if (accounts.length > 0) {
-                        console.log('Account changed:', accounts[0]);
-                    }
-                });
+        function updateUI(address) {
+            const btn = document.getElementById('connectBtn');
+            const shortAddr = `${address.substring(0,6)}...${address.substring(38)}`;
+            btn.textContent = `✅ ${shortAddr}`;
+            btn.disabled = true;
+            btn.style.background = 'linear-gradient(90deg, #00AA00, #00CC00)';
+        }
+        
+        function showStatus(message, type) {
+            const status = document.getElementById('status');
+            status.textContent = message;
+            status.className = type;
+            status.style.display = 'block';
+            
+            if (type === 'success') {
+                setTimeout(() => {
+                    status.style.display = 'none';
+                }, 5000);
             }
-        });
+        }
+        
+        // Слушаем изменения аккаунтов
+        if (window.ethereum) {
+            window.ethereum.on('accountsChanged', (accounts) => {
+                if (accounts.length > 0) {
+                    updateUI(accounts[0]);
+                } else {
+                    // Disconnected
+                    const btn = document.getElementById('connectBtn');
+                    btn.textContent = '🔗 Connect Wallet';
+                    btn.disabled = false;
+                    btn.style.background = 'linear-gradient(90deg, #0052FF, #0066FF)';
+                }
+            });
+        }
     </script>
 </body>
 </html>

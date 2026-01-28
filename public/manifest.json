@@ -1,17 +1,17 @@
 ﻿{
   "name": "Your Base Level",
-  "description": "Discover your Base network status",
-  "icon": "icon.png",
-  "splash": {
-    "image": "preview.png",
-    "backgroundColor": "#000000"
-  },
+  "description": "Discover your Base network status and mint NFT",
+  "icon_url": "https://your-base-level.vercel.app/icon.png",
+  "app_url": "https://your-base-level.vercel.app",
   "chains": [
     {
       "id": 8453,
       "name": "base"
     }
   ],
-  "app_url": "https://your-base-level.vercel.app",
-  "manifest_version": "1"
+  "manifest_version": "1",
+  "app": {
+    "background_color": "#000000",
+    "theme_color": "#0052FF"
+  }
 }
