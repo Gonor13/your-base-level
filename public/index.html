@@ -304,5 +304,31 @@
         
         console.log('Base Level Mini App loaded with wallet connection');
     </script>
+    <!-- Диагностическая кнопка -->
+    <div style="position: fixed; bottom: 20px; right: 20px;">
+        <button onclick="testWalletDetection()" 
+                style="background: #333; color: white; border: none; padding: 10px; border-radius: 5px;">
+            🐛 Debug
+        </button>
+    </div>
+    
+    <script>
+    function testWalletDetection() {
+        console.log('=== WALLET DEBUG ===');
+        console.log('window.ethereum exists:', !!window.ethereum);
+        console.log('window.ethereum:', window.ethereum);
+        console.log('Is MetaMask:', window.ethereum?.isMetaMask);
+        console.log('Is Coinbase Wallet:', window.ethereum?.isCoinbaseWallet);
+        console.log('Is Brave Wallet:', window.ethereum?.isBraveWallet);
+        
+        if (window.ethereum) {
+            alert('✅ Кошелек обнаружен!\n' + 
+                  'isMetaMask: ' + window.ethereum.isMetaMask + '\n' +
+                  'isCoinbaseWallet: ' + window.ethereum.isCoinbaseWallet);
+        } else {
+            alert('❌ Кошелек НЕ обнаружен!\nУстановите MetaMask или Base Wallet.');
+        }
+    }
+    </script>
 </body>
 </html>
