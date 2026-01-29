@@ -40,11 +40,8 @@
     
     <title>Your Base Level</title>
     
-    <!-- Ethers.js из CloudFlare CDN -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.min.js" 
-            integrity="sha512-9x4K3g7zTlQvnKXw6F0KtCqVGcU1qy+OQyTULF6HPT5XJ7LkA/6+I/3qMlC5hMZzqHfqKkqJQeQ2W9p2K1fQ2w==" 
-            crossorigin="anonymous" 
-            referrerpolicy="no-referrer"></script>
+    <!-- ЛОКАЛЬНЫЙ ethers.js -->
+    <script src="/ethers.js"></script>
     
     <style>
         body {
@@ -162,7 +159,6 @@
         
         <div id="walletInfo" class="wallet-info">
             <p>Connected: <span id="walletAddress">0x...</span></p>
-            <p>Balance: <span id="walletBalance">Loading...</span></p>
             <button class="btn" onclick="disconnectWallet()" style="background: #ff4444;">
                 Disconnect Wallet
             </button>
@@ -199,115 +195,53 @@
     
     <script>
     let walletAddress = '';
-    let walletProvider = null;
     
     // Проверяем загрузку ethers.js
-    function checkEthersLoaded() {
+    window.addEventListener('DOMContentLoaded', function() {
+        console.log('DOM loaded');
+        
         if (typeof ethers !== 'undefined') {
             document.getElementById('status').innerHTML = '✅ Wallet libraries ready';
             document.getElementById('status').className = 'status success';
-            return true;
+        } else {
+            document.getElementById('status').innerHTML = '⚠️ Using native wallet connection';
+            document.getElementById('status').className = 'status info';
         }
-        return false;
-    }
-    
-    // Пытаемся загрузить ethers.js с резервными источниками
-    function loadEthersWithFallback() {
-        const statusEl = document.getElementById('status');
         
-        // Первый источник: cloudflare
-        const script = document.createElement('script');
-        script.src = 'https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.min.js';
-        script.integrity = 'sha512-9x4K3g7zTlQvnKXw6F0KtCqVGcU1qy+OQyTULF6HPT5XJ7LkA/6+I/3qMlC5hMZzqHfqKkqJQeQ2W9p2K1fQ2w==';
-        script.crossOrigin = 'anonymous';
-        script.referrerPolicy = 'no-referrer';
-        
-        script.onload = function() {
-            console.log('ethers.js loaded from CloudFlare');
-            if (checkEthersLoaded()) {
-                statusEl.innerHTML = '✅ Wallet libraries ready';
-                statusEl.className = 'status success';
-                // Проверяем существующее подключение
-                if (window.ethereum) {
-                    checkExistingConnection();
-                }
-            }
-        };
-        
-        script.onerror = function() {
-            console.log('CloudFlare CDN failed, trying jsDelivr...');
-            statusEl.innerHTML = '⚠️ Retrying library load...';
-            
-            // Второй источник: jsDelivr
-            const backupScript = document.createElement('script');
-            backupScript.src = 'https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.min.js';
-            
-            backupScript.onload = function() {
-                console.log('ethers.js loaded from jsDelivr');
-                if (checkEthersLoaded()) {
-                    statusEl.innerHTML = '✅ Wallet libraries ready';
-                    statusEl.className = 'status success';
-                    if (window.ethereum) {
-                        checkExistingConnection();
-                    }
-                }
-            };
-            
-            backupScript.onerror = function() {
-                console.log('All CDNs failed');
-                statusEl.innerHTML = '❌ Failed to load wallet libraries. Please refresh the page.';
-                statusEl.className = 'status error';
-            };
-            
-            document.head.appendChild(backupScript);
-        };
-        
-        document.head.appendChild(script);
-    }
+        // Проверяем существующее подключение
+        if (window.ethereum) {
+            checkExistingConnection();
+        }
+    });
     
     // Проверяем существующее подключение
     async function checkExistingConnection() {
         try {
-            const accounts = await window.ethereum.request({ 
-                method: 'eth_accounts' 
-            });
-            if (accounts.length > 0) {
-                walletAddress = accounts[0];
-                await setupWallet();
+            // Проверяем MetaMask API напрямую
+            if (window.ethereum && window.ethereum.request) {
+                const accounts = await window.ethereum.request({ 
+                    method: 'eth_accounts' 
+                });
+                if (accounts.length > 0) {
+                    walletAddress = accounts[0];
+                    updateWalletUI();
+                }
             }
         } catch (error) {
             console.log('No existing connection');
         }
     }
     
-    // Настройка кошелька после подключения
-    async function setupWallet() {
-        if (!walletAddress || typeof ethers === 'undefined') return;
-        
-        try {
-            walletProvider = new ethers.providers.Web3Provider(window.ethereum);
-            updateWalletUI();
-        } catch (error) {
-            console.error('Setup error:', error);
-        }
-    }
-    
-    // Подключение кошелька
+    // Подключение кошелька БЕЗ ethers.js
     async function connectWallet() {
         const statusEl = document.getElementById('status');
         const connectBtn = document.getElementById('connectBtn');
-        
-        // Проверяем загружен ли ethers.js
-        if (!checkEthersLoaded()) {
-            statusEl.innerHTML = '❌ Wallet libraries not loaded yet. Please wait...';
-            statusEl.className = 'status error';
-            return;
-        }
         
         // Проверяем наличие провайдера кошелька
         if (!window.ethereum) {
             statusEl.innerHTML = '❌ Please install MetaMask or Base Wallet!';
             statusEl.className = 'status error';
+            window.open('https://metamask.io/download/', '_blank');
             return;
         }
         
@@ -315,7 +249,7 @@
             connectBtn.disabled = true;
             connectBtn.textContent = 'Connecting...';
             
-            // Запрашиваем подключение
+            // Используем нативный API кошелька
             const accounts = await window.ethereum.request({
                 method: 'eth_requestAccounts'
             });
@@ -325,7 +259,9 @@
             }
             
             walletAddress = accounts[0];
-            await setupWallet();
+            
+            // Обновляем UI
+            updateWalletUI();
             
             statusEl.innerHTML = '✅ Wallet connected successfully!';
             statusEl.className = 'status success';
@@ -337,7 +273,16 @@
             
         } catch (error) {
             console.error('Connection error:', error);
-            statusEl.innerHTML = `❌ Error: ${error.message}`;
+            
+            // Проверяем конкретные ошибки
+            if (error.code === 4001) {
+                statusEl.innerHTML = '❌ Connection rejected by user';
+            } else if (error.code === -32002) {
+                statusEl.innerHTML = '⏳ Please unlock your wallet first';
+            } else {
+                statusEl.innerHTML = `❌ Error: ${error.message || 'Unknown error'}`;
+            }
+            
             statusEl.className = 'status error';
             connectBtn.textContent = '🔗 Connect Wallet';
             connectBtn.disabled = false;
@@ -345,11 +290,10 @@
     }
     
     // Обновление UI после подключения
-    async function updateWalletUI() {
+    function updateWalletUI() {
         const connectBtn = document.getElementById('connectBtn');
         const walletInfoEl = document.getElementById('walletInfo');
         const walletAddressEl = document.getElementById('walletAddress');
-        const walletBalanceEl = document.getElementById('walletBalance');
         
         // Короткий адрес для отображения
         const shortAddress = walletAddress ? 
@@ -364,23 +308,11 @@
         // Показываем информацию о кошельке
         walletAddressEl.textContent = shortAddress;
         walletInfoEl.style.display = 'block';
-        
-        // Получаем баланс
-        if (walletProvider && walletAddress) {
-            try {
-                const balance = await walletProvider.getBalance(walletAddress);
-                const balanceInEth = ethers.utils.formatEther(balance);
-                walletBalanceEl.textContent = `${parseFloat(balanceInEth).toFixed(4)} ETH`;
-            } catch (error) {
-                walletBalanceEl.textContent = 'Error loading balance';
-            }
-        }
     }
     
     // Отключение кошелька
     function disconnectWallet() {
         walletAddress = '';
-        walletProvider = null;
         
         const connectBtn = document.getElementById('connectBtn');
         const walletInfoEl = document.getElementById('walletInfo');
@@ -415,27 +347,21 @@
         alert(`Minting Base Level NFT for ${walletAddress.substring(0, 8)}...\n\nYou will be prompted to confirm the transaction in your wallet. Only gas fees required.`);
     }
     
-    // Инициализация при загрузке страницы
-    window.addEventListener('DOMContentLoaded', function() {
-        console.log('DOM loaded, starting ethers.js load');
-        loadEthersWithFallback();
+    // Слушаем изменения аккаунтов
+    if (window.ethereum) {
+        window.ethereum.on('accountsChanged', (accounts) => {
+            if (accounts.length > 0) {
+                walletAddress = accounts[0];
+                updateWalletUI();
+            } else {
+                disconnectWallet();
+            }
+        });
         
-        // Слушаем изменения аккаунтов
-        if (window.ethereum) {
-            window.ethereum.on('accountsChanged', (accounts) => {
-                if (accounts.length > 0) {
-                    walletAddress = accounts[0];
-                    setupWallet();
-                } else {
-                    disconnectWallet();
-                }
-            });
-            
-            window.ethereum.on('chainChanged', () => {
-                window.location.reload();
-            });
-        }
-    });
+        window.ethereum.on('chainChanged', () => {
+            window.location.reload();
+        });
+    }
     </script>
 </body>
 </html>
