@@ -40,8 +40,8 @@
     
     <title>Your Base Level</title>
     
-    <!-- ЛОКАЛЬНЫЙ ethers.js -->
-    <script src="/ethers.js"></script>
+    <!-- Ethers.js -->
+    <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.min.js"></script>
     
     <style>
         body {
@@ -57,7 +57,7 @@
             text-align: center;
         }
         .container {
-            max-width: 600px;
+            max-width: 800px;
             padding: 2rem;
         }
         .logo {
@@ -89,10 +89,9 @@
             font-weight: bold;
             border-radius: 12px;
             cursor: pointer;
-            margin: 1rem 0;
+            margin: 0.5rem;
             transition: all 0.3s;
-            width: 100%;
-            max-width: 300px;
+            min-width: 200px;
         }
         .btn:hover:not(:disabled) {
             transform: translateY(-2px);
@@ -104,6 +103,12 @@
         }
         .btn-success {
             background: linear-gradient(90deg, #00AA00, #00CC00);
+        }
+        .btn-warning {
+            background: linear-gradient(90deg, #F59E0B, #D97706);
+        }
+        .btn-purple {
+            background: linear-gradient(90deg, #8B5CF6, #A855F7);
         }
         .status {
             padding: 1rem;
@@ -125,22 +130,44 @@
             border: 1px solid #0052FF;
             color: #0052FF;
         }
-        .features {
+        .level-display {
+            font-size: 5rem;
+            font-weight: bold;
+            margin: 1rem 0;
+            background: linear-gradient(90deg, #FFD700, #FFA500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        .stat-card {
             background: #111;
             padding: 1.5rem;
             border-radius: 12px;
-            margin: 2rem 0;
-            text-align: left;
+            text-align: center;
         }
-        .features h3 {
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
             color: #0052FF;
-            margin-top: 0;
         }
-        .wallet-info {
-            background: #1a1a1a;
-            padding: 1rem;
-            border-radius: 8px;
-            margin: 1rem 0;
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #0052FF;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .hidden {
             display: none;
         }
     </style>
@@ -149,44 +176,86 @@
     <div class="container">
         <div class="logo">B</div>
         <h1>Your Base Level</h1>
-        <p style="font-size: 1.2rem; color: #ccc; margin-bottom: 1rem;">
+        <p style="font-size: 1.2rem; color: #ccc; margin-bottom: 2rem;">
             Discover your status in the Base ecosystem
         </p>
         
         <div id="status" class="status info">
-            Loading...
+            Connect your wallet to get started
         </div>
         
-        <div id="walletInfo" class="wallet-info">
-            <p>Connected: <span id="walletAddress">0x...</span></p>
-            <button class="btn" onclick="disconnectWallet()" style="background: #ff4444;">
-                Disconnect Wallet
+        <!-- Wallet Connection Section -->
+        <div id="walletSection">
+            <button class="btn" id="connectBtn" onclick="connectWallet()">
+                🔗 Connect Wallet
             </button>
+            <div id="walletInfo" class="hidden" style="margin-top: 1rem;">
+                <p>Connected: <span id="walletAddress">0x...</span></p>
+                <p>Network: <span id="networkName">Base</span></p>
+            </div>
         </div>
         
-        <button class="btn" id="connectBtn" onclick="connectWallet()">
-            🔗 Connect Wallet
-        </button>
-        
-        <div class="features">
-            <h3>🎯 What Happens After Connecting?</h3>
-            <p>1. <strong>Analyze</strong> your Base network activity</p>
-            <p>2. <strong>Calculate</strong> your unique Base Level (1-10)</p>
-            <p>3. <strong>Mint</strong> a dynamic NFT with your level</p>
-            <p>4. <strong>Share</strong> your status with friends</p>
-            <p>5. <strong>Pay only gas fees</strong> - no minting costs!</p>
+        <!-- Main App Section (hidden until wallet connected) -->
+        <div id="appSection" class="hidden">
+            <!-- Level Display -->
+            <div id="levelSection" class="hidden">
+                <h2>Your Base Level</h2>
+                <div class="level-display" id="levelValue">?</div>
+                <p id="levelDescription">Calculating your level...</p>
+                
+                <!-- Stats -->
+                <div class="stats" id="statsContainer">
+                    <!-- Stats will be populated by JavaScript -->
+                </div>
+            </div>
+            
+            <!-- Action Buttons -->
+            <div style="margin: 2rem 0;">
+                <button class="btn btn-purple" id="checkLevelBtn" onclick="checkBaseLevel()">
+                    📊 Check My Base Level
+                </button>
+                <button class="btn btn-warning" id="mintBtn" onclick="mintNFT()" disabled>
+                    🎨 Mint Base Level NFT
+                </button>
+                <button class="btn" onclick="shareLevel()" style="background: linear-gradient(90deg, #10B981, #059669);">
+                    📤 Share Level
+                </button>
+            </div>
+            
+            <!-- Progress -->
+            <div id="progressSection" class="hidden">
+                <h3>📈 Base Activity Analysis</h3>
+                <div style="background: #111; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                    <div id="progressBar" style="height: 20px; background: #333; border-radius: 10px; overflow: hidden;">
+                        <div id="progressFill" style="height: 100%; background: linear-gradient(90deg, #0052FF, #00D4FF); width: 0%; transition: width 0.5s;"></div>
+                    </div>
+                    <p id="progressText" style="margin-top: 0.5rem;">Analyzing Base transactions...</p>
+                </div>
+            </div>
+            
+            <!-- Features -->
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-value" id="txCount">0</div>
+                    <p>Base Transactions</p>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="nftCount">0</div>
+                    <p>NFTs on Base</p>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="daysActive">0</div>
+                    <p>Days Active</p>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="volume">0</div>
+                    <p>ETH Volume</p>
+                </div>
+            </div>
         </div>
         
-        <div style="margin-top: 2rem;">
-            <button class="btn" onclick="checkLevel()" style="background: linear-gradient(90deg, #8B5CF6, #A855F7);">
-                📊 Check My Base Level
-            </button>
-            <button class="btn" onclick="mintNFT()" style="background: linear-gradient(90deg, #F59E0B, #D97706); margin-top: 0.5rem;">
-                🎨 Mint Base Level NFT
-            </button>
-        </div>
-        
-        <div style="margin-top: 2rem; color: #666; font-size: 0.9rem;">
+        <!-- Contract Info -->
+        <div style="margin-top: 3rem; color: #666; font-size: 0.9rem;">
             <p>Smart Contract: 0xa61878Cd14f87F22623A44Cf54D8F2F0a0E6c11a</p>
             <p>Network: Base Mainnet</p>
             <p><a href="https://basescan.org/address/0xa61878Cd14f87F22623A44Cf54D8F2F0a0E6c11a" style="color: #0052FF;" target="_blank">View on Basescan</a></p>
@@ -194,62 +263,59 @@
     </div>
     
     <script>
+    // State
     let walletAddress = '';
+    let provider = null;
+    let signer = null;
+    let userLevel = 0;
+    let hasNFT = false;
     
-    // Проверяем загрузку ethers.js
-    window.addEventListener('DOMContentLoaded', function() {
-        console.log('DOM loaded');
+    // Contract Address (Your Base Level NFT)
+    const CONTRACT_ADDRESS = '0xa61878Cd14f87F22623A44Cf54D8F2F0a0E6c11a';
+    
+    // ABI for your contract (minimal - balanceOf and mint functions)
+    const CONTRACT_ABI = [
+        "function balanceOf(address owner) view returns (uint256)",
+        "function mint() payable",
+        "function tokenOfOwnerByIndex(address owner, uint256 index) view returns (uint256)",
+        "function totalSupply() view returns (uint256)"
+    ];
+    
+    // Initialize
+    window.addEventListener('DOMContentLoaded', async () => {
+        console.log('Base Level App initialized');
         
-        if (typeof ethers !== 'undefined') {
-            document.getElementById('status').innerHTML = '✅ Wallet libraries ready';
-            document.getElementById('status').className = 'status success';
-        } else {
-            document.getElementById('status').innerHTML = '⚠️ Using native wallet connection';
-            document.getElementById('status').className = 'status info';
-        }
-        
-        // Проверяем существующее подключение
+        // Check for existing connection
         if (window.ethereum) {
-            checkExistingConnection();
-        }
-    });
-    
-    // Проверяем существующее подключение
-    async function checkExistingConnection() {
-        try {
-            // Проверяем MetaMask API напрямую
-            if (window.ethereum && window.ethereum.request) {
+            try {
                 const accounts = await window.ethereum.request({ 
                     method: 'eth_accounts' 
                 });
                 if (accounts.length > 0) {
-                    walletAddress = accounts[0];
-                    updateWalletUI();
+                    await setupWallet(accounts[0]);
                 }
+            } catch (error) {
+                console.log('No existing connection');
             }
-        } catch (error) {
-            console.log('No existing connection');
         }
-    }
+    });
     
-    // Подключение кошелька БЕЗ ethers.js
+    // Connect Wallet
     async function connectWallet() {
         const statusEl = document.getElementById('status');
         const connectBtn = document.getElementById('connectBtn');
         
-        // Проверяем наличие провайдера кошелька
-        if (!window.ethereum) {
-            statusEl.innerHTML = '❌ Please install MetaMask or Base Wallet!';
-            statusEl.className = 'status error';
-            window.open('https://metamask.io/download/', '_blank');
-            return;
-        }
-        
         try {
+            if (!window.ethereum) {
+                throw new Error('Please install MetaMask or Base Wallet!');
+            }
+            
             connectBtn.disabled = true;
             connectBtn.textContent = 'Connecting...';
+            statusEl.innerHTML = '<span class="loading"></span> Connecting to wallet...';
+            statusEl.className = 'status info';
             
-            // Используем нативный API кошелька
+            // Request connection
             const accounts = await window.ethereum.request({
                 method: 'eth_requestAccounts'
             });
@@ -258,109 +324,354 @@
                 throw new Error('No accounts found');
             }
             
-            walletAddress = accounts[0];
-            
-            // Обновляем UI
-            updateWalletUI();
-            
-            statusEl.innerHTML = '✅ Wallet connected successfully!';
-            statusEl.className = 'status success';
-            
-            // Скрываем статус через 3 секунды
-            setTimeout(() => {
-                statusEl.style.display = 'none';
-            }, 3000);
+            await setupWallet(accounts[0]);
             
         } catch (error) {
             console.error('Connection error:', error);
-            
-            // Проверяем конкретные ошибки
-            if (error.code === 4001) {
-                statusEl.innerHTML = '❌ Connection rejected by user';
-            } else if (error.code === -32002) {
-                statusEl.innerHTML = '⏳ Please unlock your wallet first';
-            } else {
-                statusEl.innerHTML = `❌ Error: ${error.message || 'Unknown error'}`;
-            }
-            
-            statusEl.className = 'status error';
+            showError(`Connection failed: ${error.message}`);
             connectBtn.textContent = '🔗 Connect Wallet';
             connectBtn.disabled = false;
         }
     }
     
-    // Обновление UI после подключения
-    function updateWalletUI() {
-        const connectBtn = document.getElementById('connectBtn');
-        const walletInfoEl = document.getElementById('walletInfo');
-        const walletAddressEl = document.getElementById('walletAddress');
+    // Setup wallet after connection
+    async function setupWallet(address) {
+        walletAddress = address;
         
-        // Короткий адрес для отображения
-        const shortAddress = walletAddress ? 
-            `${walletAddress.substring(0, 6)}...${walletAddress.substring(38)}` : 
-            '0x...';
+        // Create provider and signer
+        provider = new ethers.providers.Web3Provider(window.ethereum);
+        signer = provider.getSigner();
         
-        // Обновляем кнопку
-        connectBtn.textContent = `✅ ${shortAddress}`;
-        connectBtn.className = 'btn btn-success';
-        connectBtn.disabled = true;
+        // Get network
+        const network = await provider.getNetwork();
+        const networkName = network.name === 'unknown' ? 'Base' : network.name;
         
-        // Показываем информацию о кошельке
-        walletAddressEl.textContent = shortAddress;
-        walletInfoEl.style.display = 'block';
-    }
-    
-    // Отключение кошелька
-    function disconnectWallet() {
-        walletAddress = '';
+        // Update UI
+        const shortAddress = `${address.substring(0, 6)}...${address.substring(38)}`;
         
-        const connectBtn = document.getElementById('connectBtn');
-        const walletInfoEl = document.getElementById('walletInfo');
-        const statusEl = document.getElementById('status');
+        document.getElementById('connectBtn').textContent = `✅ ${shortAddress}`;
+        document.getElementById('connectBtn').className = 'btn btn-success';
+        document.getElementById('connectBtn').disabled = true;
         
-        connectBtn.textContent = '🔗 Connect Wallet';
-        connectBtn.className = 'btn';
-        connectBtn.disabled = false;
+        document.getElementById('walletAddress').textContent = shortAddress;
+        document.getElementById('networkName').textContent = networkName;
+        document.getElementById('walletInfo').classList.remove('hidden');
         
-        walletInfoEl.style.display = 'none';
+        // Show app section
+        document.getElementById('appSection').classList.remove('hidden');
+        document.getElementById('status').innerHTML = '✅ Wallet connected! Click "Check My Base Level" to analyze your activity.';
+        document.getElementById('status').className = 'status success';
         
-        statusEl.innerHTML = 'Wallet disconnected';
-        statusEl.className = 'status info';
-        statusEl.style.display = 'block';
-    }
-    
-    // Проверка уровня (заглушка)
-    function checkLevel() {
-        if (!walletAddress) {
-            alert('Please connect your wallet first!');
-            return;
-        }
-        alert(`Checking Base Level for ${walletAddress.substring(0, 8)}...\n\nThis feature will analyze your Base network activity and calculate your level (1-10).`);
-    }
-    
-    // Минт NFT (заглушка)
-    function mintNFT() {
-        if (!walletAddress) {
-            alert('Please connect your wallet first!');
-            return;
-        }
-        alert(`Minting Base Level NFT for ${walletAddress.substring(0, 8)}...\n\nYou will be prompted to confirm the transaction in your wallet. Only gas fees required.`);
-    }
-    
-    // Слушаем изменения аккаунтов
-    if (window.ethereum) {
+        // Check if already has NFT
+        await checkExistingNFT();
+        
+        // Set up event listeners
         window.ethereum.on('accountsChanged', (accounts) => {
             if (accounts.length > 0) {
-                walletAddress = accounts[0];
-                updateWalletUI();
+                setupWallet(accounts[0]);
             } else {
-                disconnectWallet();
+                location.reload();
             }
         });
         
         window.ethereum.on('chainChanged', () => {
-            window.location.reload();
+            location.reload();
         });
+    }
+    
+    // Check if user already has NFT
+    async function checkExistingNFT() {
+        if (!provider || !walletAddress) return;
+        
+        try {
+            const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, provider);
+            const balance = await contract.balanceOf(walletAddress);
+            hasNFT = balance.gt(0);
+            
+            if (hasNFT) {
+                document.getElementById('mintBtn').disabled = true;
+                document.getElementById('mintBtn').textContent = '✅ NFT Already Minted';
+                showSuccess('You already have a Base Level NFT!');
+            } else {
+                document.getElementById('mintBtn').disabled = false;
+            }
+        } catch (error) {
+            console.log('Error checking NFT balance:', error);
+        }
+    }
+    
+    // Check Base Level (main functionality)
+    async function checkBaseLevel() {
+        if (!walletAddress) {
+            showError('Please connect wallet first');
+            return;
+        }
+        
+        const statusEl = document.getElementById('status');
+        const checkBtn = document.getElementById('checkLevelBtn');
+        const progressSection = document.getElementById('progressSection');
+        const levelSection = document.getElementById('levelSection');
+        
+        try {
+            checkBtn.disabled = true;
+            checkBtn.textContent = 'Analyzing...';
+            statusEl.innerHTML = '<span class="loading"></span> Analyzing your Base network activity...';
+            statusEl.className = 'status info';
+            
+            // Show progress section
+            progressSection.classList.remove('hidden');
+            levelSection.classList.remove('hidden');
+            
+            // Simulate analysis progress
+            simulateAnalysisProgress();
+            
+            // In a real app, you would:
+            // 1. Query Base blockchain for transaction history
+            // 2. Analyze NFT holdings
+            // 3. Check DeFi activity
+            // 4. Calculate level based on activity
+            
+            // For now, we'll simulate with mock data
+            setTimeout(async () => {
+                await calculateMockLevel();
+                
+                checkBtn.textContent = '🔄 Check Again';
+                checkBtn.disabled = false;
+                
+                showSuccess('Base Level calculated successfully!');
+                
+                // Hide progress after delay
+                setTimeout(() => {
+                    progressSection.classList.add('hidden');
+                }, 2000);
+            }, 3000);
+            
+        } catch (error) {
+            console.error('Error checking level:', error);
+            showError(`Failed to analyze: ${error.message}`);
+            checkBtn.textContent = '📊 Check My Base Level';
+            checkBtn.disabled = false;
+        }
+    }
+    
+    // Simulate analysis progress
+    function simulateAnalysisProgress() {
+        const progressFill = document.getElementById('progressFill');
+        const progressText = document.getElementById('progressText');
+        const steps = [
+            {width: 25, text: 'Fetching transactions...'},
+            {width: 50, text: 'Analyzing NFT portfolio...'},
+            {width: 75, text: 'Checking DeFi activity...'},
+            {width: 100, text: 'Calculating level...'}
+        ];
+        
+        steps.forEach((step, index) => {
+            setTimeout(() => {
+                progressFill.style.width = step.width + '%';
+                progressText.textContent = step.text;
+            }, index * 800);
+        });
+    }
+    
+    // Calculate mock level (replace with real blockchain queries)
+    async function calculateMockLevel() {
+        if (!provider || !walletAddress) return;
+        
+        try {
+            // Mock data for demo
+            const mockStats = {
+                txCount: Math.floor(Math.random() * 100) + 1,
+                nftCount: Math.floor(Math.random() * 20),
+                daysActive: Math.floor(Math.random() * 365) + 1,
+                volume: (Math.random() * 10).toFixed(2)
+            };
+            
+            // Calculate level based on activity (1-10)
+            let level = 1;
+            
+            // Simple algorithm for demo
+            if (mockStats.txCount > 50) level += 2;
+            if (mockStats.txCount > 100) level += 1;
+            if (mockStats.nftCount > 5) level += 2;
+            if (mockStats.nftCount > 10) level += 1;
+            if (mockStats.daysActive > 180) level += 2;
+            if (mockStats.daysActive > 365) level += 1;
+            if (parseFloat(mockStats.volume) > 5) level += 1;
+            
+            // Cap at 10
+            level = Math.min(level, 10);
+            userLevel = level;
+            
+            // Update UI with mock data
+            updateLevelUI(level, mockStats);
+            
+            // Enable mint button if level > 0 and no NFT yet
+            if (level > 0 && !hasNFT) {
+                document.getElementById('mintBtn').disabled = false;
+            }
+            
+        } catch (error) {
+            console.error('Error in mock calculation:', error);
+            throw error;
+        }
+    }
+    
+    // Update level UI
+    function updateLevelUI(level, stats) {
+        // Update level display
+        document.getElementById('levelValue').textContent = level;
+        
+        // Update level description
+        const descriptions = [
+            "New to Base",
+            "Getting started",
+            "Active user",
+            "Regular user",
+            "Experienced user",
+            "Power user",
+            "Base enthusiast",
+            "Base veteran",
+            "Base expert",
+            "Base legend"
+        ];
+        const description = descriptions[Math.min(level - 1, 9)] || "Base user";
+        document.getElementById('levelDescription').textContent = description;
+        
+        // Update stats
+        document.getElementById('txCount').textContent = stats.txCount;
+        document.getElementById('nftCount').textContent = stats.nftCount;
+        document.getElementById('daysActive').textContent = stats.daysActive;
+        document.getElementById('volume').textContent = stats.volume + ' ETH';
+        
+        // Update stats container visibility
+        document.getElementById('statsContainer').style.display = 'grid';
+    }
+    
+    // Mint NFT
+    async function mintNFT() {
+        if (!walletAddress || !signer) {
+            showError('Please connect wallet first');
+            return;
+        }
+        
+        if (userLevel === 0) {
+            showError('Please check your Base Level first');
+            return;
+        }
+        
+        if (hasNFT) {
+            showError('You already have a Base Level NFT');
+            return;
+        }
+        
+        const mintBtn = document.getElementById('mintBtn');
+        const statusEl = document.getElementById('status');
+        
+        try {
+            mintBtn.disabled = true;
+            mintBtn.textContent = 'Minting...';
+            statusEl.innerHTML = '<span class="loading"></span> Preparing NFT mint...';
+            statusEl.className = 'status info';
+            
+            // Create contract instance with signer
+            const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
+            
+            // Estimate gas first
+            const gasEstimate = await contract.estimateGas.mint();
+            
+            // Execute mint transaction
+            const tx = await contract.mint({
+                gasLimit: gasEstimate.mul(120).div(100) // 20% buffer
+            });
+            
+            statusEl.innerHTML = `<span class="loading"></span> Transaction sent! Waiting for confirmation...<br>
+                                 <small>TX: ${tx.hash.substring(0, 20)}...</small>`;
+            
+            // Wait for transaction confirmation
+            const receipt = await tx.wait();
+            
+            // Update UI
+            hasNFT = true;
+            mintBtn.textContent = '✅ NFT Minted!';
+            mintBtn.style.background = 'linear-gradient(90deg, #00AA00, #00CC00)';
+            
+            showSuccess(`NFT minted successfully!<br>
+                       <a href="https://basescan.org/tx/${tx.hash}" target="_blank" style="color: white;">View transaction</a>`);
+            
+            // You could also show the NFT image here
+            
+        } catch (error) {
+            console.error('Minting error:', error);
+            
+            if (error.code === 4001) {
+                showError('Transaction rejected by user');
+            } else if (error.message.includes('insufficient funds')) {
+                showError('Insufficient ETH for gas fees');
+            } else if (error.message.includes('already minted')) {
+                showError('You can only mint one NFT per wallet');
+                hasNFT = true;
+                mintBtn.textContent = '✅ NFT Already Minted';
+                mintBtn.disabled = true;
+            } else {
+                showError(`Minting failed: ${error.message}`);
+            }
+            
+            mintBtn.textContent = '🎨 Mint Base Level NFT';
+            mintBtn.disabled = false;
+        }
+    }
+    
+    // Share level
+    function shareLevel() {
+        if (userLevel === 0) {
+            showError('Check your level first');
+            return;
+        }
+        
+        const shareText = `🏆 My Base Level is ${userLevel}/10! 
+Check yours at: https://your-base-level.vercel.app
+#Base #BaseLevel #Web3`;
+        
+        if (navigator.share) {
+            navigator.share({
+                title: 'My Base Level',
+                text: shareText,
+                url: window.location.href
+            });
+        } else {
+            // Fallback: copy to clipboard
+            navigator.clipboard.writeText(shareText)
+                .then(() => showSuccess('Copied to clipboard! Share it on Twitter/Farcaster'))
+                .catch(() => showError('Failed to copy'));
+        }
+    }
+    
+    // UI helpers
+    function showError(message) {
+        const statusEl = document.getElementById('status');
+        statusEl.innerHTML = `❌ ${message}`;
+        statusEl.className = 'status error';
+    }
+    
+    function showSuccess(message) {
+        const statusEl = document.getElementById('status');
+        statusEl.innerHTML = `✅ ${message}`;
+        statusEl.className = 'status success';
+        
+        // Auto-hide after 5 seconds
+        setTimeout(() => {
+            if (statusEl.className.includes('success')) {
+                statusEl.innerHTML = 'Ready';
+                statusEl.className = 'status info';
+            }
+        }, 5000);
+    }
+    
+    // Initialize when ethers is ready
+    if (typeof ethers !== 'undefined') {
+        console.log('ethers.js loaded');
+    } else {
+        console.warn('ethers.js not loaded');
     }
     </script>
 </body>
