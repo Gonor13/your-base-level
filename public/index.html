@@ -1,846 +1,316 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Base Level</title>
+    <meta name="description" content="Discover your status in the Base ecosystem">
     
-    <!-- ==== CRITICAL BASE TAGS ==== -->
-    <meta name="eth:chain" content="base">
-    <meta name="eth:network" content="8453">
-    <meta name="base:app_id" content="697845b888e3bac59cf3dab8">
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://your-base-level.vercel.app/">
+    <meta property="og:title" content="Your Base Level">
+    <meta property="og:description" content="Discover your status in the Base ecosystem">
+    <meta property="og:image" content="/og-image.png">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://your-base-level.vercel.app/">
+    <meta property="twitter:title" content="Your Base Level">
+    <meta property="twitter:description" content="Discover your status in the Base ecosystem">
+    <meta property="twitter:image" content="/og-image.png">
     
     <!-- Farcaster Frame -->
     <meta property="fc:frame" content="vNext">
-    <meta property="fc:frame:image" content="https://your-base-level.vercel.app/preview.png">
-    <meta property="fc:frame:image:aspect_ratio" content="1.91:1">
-    <meta property="fc:frame:button:1" content="Open Your Base Level">
-    <meta property="fc:frame:button:1:action" content="link">
-    <meta property="fc:frame:button:1:target" content="https://your-base-level.vercel.app">
-    
-    <!-- OpenGraph -->
-    <meta property="og:title" content="Your Base Level">
-    <meta property="og:description" content="Discover your status in the Base ecosystem. Mint your unique Base Level NFT.">
-    <meta property="og:image" content="https://your-base-level.vercel.app/preview.png">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-    <meta property="og:url" content="https://your-base-level.vercel.app">
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="Your Base Level">
-    
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Your Base Level">
-    <meta name="twitter:description" content="Discover your status in the Base ecosystem. Mint your unique Base Level NFT.">
-    <meta name="twitter:image" content="https://your-base-level.vercel.app/preview.png">
-    
-    <!-- Manifest -->
-    <link rel="manifest" href="/manifest.json">
-    <meta name="application-name" content="Your Base Level">
-    <meta name="theme-color" content="#0052FF">
-    
-    <title>Your Base Level</title>
-    
-    <!-- ЛОКАЛЬНЫЙ ethers.js -->
-    <script src="/ethers.js"></script>
+    <meta property="fc:frame:image" content="/og-image.png">
+    <meta property="fc:frame:button:1" content="Check My Level">
+    <meta property="fc:frame:post_url" content="/api/frame">
     
     <style>
-        :root {
-            --base-blue: #0052FF;
-            --base-gradient: linear-gradient(135deg, #0052FF, #0066FF);
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
         
         body {
-            margin: 0;
-            padding: 0;
-            background: #000;
-            color: white;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
         }
         
         .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-        
-        header {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-        
-        .logo {
-            width: 100px;
-            height: 100px;
-            background: var(--base-gradient);
+            background: white;
             border-radius: 20px;
-            margin: 0 auto 1.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 40px;
-            font-weight: bold;
-            color: white;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
         }
         
         h1 {
-            font-size: 3.5rem;
-            background: linear-gradient(90deg, #0052FF, #00D4FF);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 1rem;
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 2.5rem;
         }
         
-        .subtitle {
-            font-size: 1.2rem;
-            color: #ccc;
-            margin-bottom: 2rem;
+        p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
         }
         
-        .btn {
-            background: var(--base-gradient);
+        .wallet-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
-            padding: 1rem 2rem;
-            font-size: 1.1rem;
-            font-weight: bold;
-            border-radius: 12px;
+            padding: 15px 30px;
+            font-size: 18px;
+            border-radius: 10px;
             cursor: pointer;
-            margin: 0.5rem;
-            transition: all 0.3s;
-            min-width: 200px;
+            margin: 20px 0;
+            transition: transform 0.3s, opacity 0.3s;
+            width: 100%;
+            max-width: 300px;
         }
         
-        .btn:hover:not(:disabled) {
+        .wallet-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(0, 82, 255, 0.3);
+            opacity: 0.9;
         }
         
-        .btn:disabled {
+        .wallet-btn:disabled {
             opacity: 0.5;
             cursor: not-allowed;
+            transform: none;
         }
         
-        .btn-success {
-            background: linear-gradient(90deg, #00AA00, #00CC00);
+        #status {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s;
         }
         
-        .btn-warning {
-            background: linear-gradient(90deg, #F59E0B, #D97706);
+        .status-connected {
+            background: #d1e7dd;
+            color: #0f5132;
+            border: 1px solid #badbcc;
         }
         
-        .btn-purple {
-            background: linear-gradient(90deg, #8B5CF6, #A855F7);
+        .status-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c2c7;
         }
         
-        .status {
-            padding: 1rem;
-            border-radius: 8px;
-            margin: 1rem auto;
-            max-width: 600px;
-            text-align: center;
+        .status-info {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffecb5;
         }
         
-        .error {
-            background: rgba(255, 68, 68, 0.1);
-            border: 1px solid #ff4444;
-            color: #ff4444;
-        }
-        
-        .success {
-            background: rgba(0, 255, 0, 0.1);
-            border: 1px solid #00ff00;
-            color: #00ff00;
-        }
-        
-        .info {
-            background: rgba(0, 82, 255, 0.1);
-            border: 1px solid #0052FF;
-            color: #0052FF;
+        #levelInfo {
+            display: none;
+            margin-top: 30px;
+            animation: fadeIn 0.5s;
         }
         
         .level-display {
-            font-size: 6rem;
+            font-size: 3rem;
             font-weight: bold;
-            margin: 1rem 0;
-            background: linear-gradient(90deg, #FFD700, #FFA500);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin: 2rem 0;
-        }
-        
-        .stat-card {
-            background: #111;
-            padding: 1.5rem;
-            border-radius: 12px;
-            text-align: center;
-            border: 1px solid #222;
-        }
-        
-        .stat-value {
-            font-size: 2.5rem;
-            font-weight: bold;
-            color: #0052FF;
-            margin-bottom: 0.5rem;
-        }
-        
-        .loading {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid #0052FF;
-            border-radius: 50%;
-            border-top-color: transparent;
-            animation: spin 1s linear infinite;
-            margin-right: 10px;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        
-        .hidden {
-            display: none !important;
-        }
-        
-        .section {
-            margin: 3rem 0;
-            padding: 2rem;
-            background: rgba(255, 255, 255, 0.02);
-            border-radius: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            margin: 20px 0;
+            color: #333;
         }
         
         .progress-bar {
+            background: #eee;
             height: 20px;
-            background: #333;
             border-radius: 10px;
+            margin: 20px 0;
             overflow: hidden;
-            margin: 1rem 0;
         }
         
         .progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, #0052FF, #00D4FF);
-            width: 0%;
-            transition: width 0.5s;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            transition: width 0.5s ease-in-out;
         }
         
-        .contract-info {
-            background: rgba(0, 82, 255, 0.05);
-            padding: 1rem;
-            border-radius: 8px;
-            margin-top: 2rem;
-            font-size: 0.9rem;
-            color: #888;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
-        @media (max-width: 768px) {
+        .mini-app-badge {
+            display: inline-block;
+            background: #0052ff;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-top: 20px;
+        }
+        
+        @media (max-width: 600px) {
             .container {
-                padding: 1rem;
+                padding: 20px;
             }
             
             h1 {
-                font-size: 2.5rem;
-            }
-            
-            .stats-grid {
-                grid-template-columns: 1fr;
+                font-size: 2rem;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Header -->
-        <header>
-            <div class="logo">B</div>
-            <h1>Your Base Level</h1>
-            <p class="subtitle">Discover your status in the Base ecosystem. Analyze activity, calculate level, mint NFT.</p>
-        </header>
+        <h1>Your Base Level</h1>
+        <p>Discover your status in the Base ecosystem. Analyze activity, calculate level, mint NFT.</p>
         
-        <!-- Status Messages -->
-        <div id="status" class="status info">
-            Connect your wallet to get started
+        <button class="wallet-btn" id="connectButton" onclick="connectWallet()">
+            Connect Wallet
+        </button>
+        
+        <div id="status" class="status-info">
+            Connect your wallet to see your Base Level
         </div>
         
-        <!-- Wallet Connection -->
-        <div style="text-align: center; margin: 2rem 0;">
-            <div id="walletSection">
-                <button class="btn" id="connectBtn" onclick="connectWallet()">
-                    🔗 Connect Wallet
-                </button>
-                <div id="walletInfo" class="hidden" style="margin-top: 1rem;">
-                    <p>Connected: <span id="walletAddress">0x...</span></p>
-                    <p>Network: <span id="networkName">Base</span></p>
-                </div>
+        <div id="levelInfo">
+            <h2>Your Base Level</h2>
+            <div class="level-display" id="level">0</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="levelBar" style="width: 0%"></div>
             </div>
+            <p id="levelDescription">Connect your wallet to calculate your level</p>
         </div>
         
-        <!-- Main App (hidden until wallet connected) -->
-        <div id="appSection" class="hidden">
-            <!-- Level Display Section -->
-            <div class="section" id="levelSection">
-                <h2 style="text-align: center;">Your Base Level Analysis</h2>
-                
-                <div style="text-align: center;">
-                    <div class="level-display" id="levelValue">?</div>
-                    <p id="levelDescription" style="font-size: 1.2rem; color: #ccc;">
-                        Check your Base activity to get your level
-                    </p>
-                </div>
-                
-                <!-- Action Buttons -->
-                <div style="text-align: center; margin: 2rem 0;">
-                    <button class="btn btn-purple" id="checkLevelBtn" onclick="checkBaseLevel()">
-                        📊 Analyze Base Activity
-                    </button>
-                    <button class="btn btn-warning" id="mintBtn" onclick="mintNFT()" disabled>
-                        🎨 Mint Base Level NFT
-                    </button>
-                    <button class="btn" onclick="shareLevel()" style="background: linear-gradient(90deg, #10B981, #059669);">
-                        📤 Share Level
-                    </button>
-                </div>
-                
-                <!-- Progress Section -->
-                <div id="progressSection" class="hidden">
-                    <h3 style="text-align: center;">📈 Analyzing Base Network Activity</h3>
-                    <div style="max-width: 600px; margin: 0 auto;">
-                        <div class="progress-bar">
-                            <div id="progressFill" class="progress-fill"></div>
-                        </div>
-                        <p id="progressText" style="text-align: center; margin-top: 0.5rem;">
-                            Starting analysis...
-                        </p>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Stats Grid -->
-            <div class="section">
-                <h3 style="text-align: center;">Base Network Statistics</h3>
-                <div class="stats-grid" id="statsContainer">
-                    <div class="stat-card">
-                        <div class="stat-value" id="txCount">0</div>
-                        <p>Base Transactions</p>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value" id="nftCount">0</div>
-                        <p>NFTs on Base</p>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value" id="daysActive">0</div>
-                        <p>Days Active</p>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value" id="volume">0</div>
-                        <p>ETH Volume</p>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value" id="contracts">0</div>
-                        <p>Contracts Used</p>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value" id="gasUsed">0</div>
-                        <p>Total Gas Used</p>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Features Info -->
-            <div class="section">
-                <h3 style="text-align: center;">🎯 How Base Level is Calculated</h3>
-                <div style="max-width: 800px; margin: 0 auto;">
-                    <p style="text-align: center; margin-bottom: 1.5rem;">
-                        Your Base Level (1-10) is calculated based on multiple factors:
-                    </p>
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
-                        <div style="background: rgba(0, 82, 255, 0.1); padding: 1rem; border-radius: 8px;">
-                            <h4>📊 Transaction Count</h4>
-                            <p>More transactions = higher level</p>
-                        </div>
-                        <div style="background: rgba(0, 82, 255, 0.1); padding: 1rem; border-radius: 8px;">
-                            <h4>🎨 NFT Activity</h4>
-                            <p>NFT mints, transfers, trades</p>
-                        </div>
-                        <div style="background: rgba(0, 82, 255, 0.1); padding: 1rem; border-radius: 8px;">
-                            <h4>💎 ETH Volume</h4>
-                            <p>Total value transferred</p>
-                        </div>
-                        <div style="background: rgba(0, 82, 255, 0.1); padding: 1rem; border-radius: 8px;">
-                            <h4>⏱️ Time Active</h4>
-                            <p>Days since first transaction</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Contract Info -->
-        <div class="contract-info">
-            <p><strong>Smart Contract:</strong> 0xa61878Cd14f87F22623A44Cf54D8F2F0a0E6c11a</p>
-            <p><strong>Network:</strong> Base Mainnet (Chain ID: 8453)</p>
-            <p><a href="https://basescan.org/address/0xa61878Cd14f87F22623A44Cf54D8F2F0a0E6c11a" 
-                  style="color: #0052FF; text-decoration: none;" 
-                  target="_blank">📡 View on Basescan</a></p>
+        <div class="mini-app-badge" id="miniAppBadge" style="display: none;">
+            Base Mini App
         </div>
     </div>
-    
+
     <script>
-    // State
-    let walletAddress = '';
-    let provider = null;
-    let signer = null;
-    let userLevel = 0;
-    let hasNFT = false;
-    let baseStats = null;
-    
-    // Contract Address
-    const NFT_CONTRACT = '0xa61878Cd14f87F22623A44Cf54D8F2F0a0E6c11a';
-    
-    // Level descriptions
-    const LEVEL_DESCRIPTIONS = [
-        "Newcomer - Just getting started on Base",
-        "Explorer - Beginning your Base journey",
-        "Active User - Regularly using Base",
-        "Regular - Consistent Base activity",
-        "Enthusiast - Engaged with Base ecosystem",
-        "Contributor - Active participant",
-        "Veteran - Experienced Base user",
-        "Expert - Deep Base knowledge",
-        "Master - Base ecosystem leader",
-        "Legend - Base OG and influencer"
-    ];
-    
-    // Initialize
-    window.addEventListener('DOMContentLoaded', function() {
-        console.log('Base Level App initialized');
-        updateStatus('Connect your wallet to analyze your Base activity', 'info');
-        
-        // Check for existing connection
-        if (window.ethereum) {
-            checkExistingConnection();
+        // Check if running as Base Mini App
+        function checkMiniApp() {
+            if (window.ethereum && window.ethereum.isMiniApp) {
+                document.getElementById('miniAppBadge').style.display = 'inline-block';
+                console.log('Running as Base Mini App');
+                return true;
+            }
+            return false;
         }
-    });
-    
-    // Check existing wallet connection
-    async function checkExistingConnection() {
-        try {
-            const accounts = await window.ethereum.request({ 
-                method: 'eth_accounts' 
-            });
-            if (accounts.length > 0) {
-                await setupWallet(accounts[0]);
-            }
-        } catch (error) {
-            console.log('No existing connection');
-        }
-    }
-    
-    // Connect Wallet
-    async function connectWallet() {
-        const connectBtn = document.getElementById('connectBtn');
         
-        try {
-            // Check if wallet is installed
-            if (!window.ethereum) {
-                window.open('https://metamask.io/download/', '_blank');
-                throw new Error('Please install MetaMask or Base Wallet');
+        // Check wallet availability
+        function checkWalletAvailability() {
+            if (typeof window.ethereum === 'undefined') {
+                showStatus('Please install MetaMask or Coinbase Wallet to use this app.', 'error');
+                document.getElementById('connectButton').disabled = true;
+                return false;
             }
-            
-            connectBtn.disabled = true;
-            connectBtn.textContent = 'Connecting...';
-            updateStatus('<span class="loading"></span> Connecting to wallet...', 'info');
-            
-            // Request connection
-            const accounts = await window.ethereum.request({
-                method: 'eth_requestAccounts'
-            });
-            
-            if (accounts.length === 0) {
-                throw new Error('No accounts found');
-            }
-            
-            await setupWallet(accounts[0]);
-            
-        } catch (error) {
-            console.error('Connection error:', error);
-            
-            if (error.code === 4001) {
-                updateStatus('Connection rejected by user', 'error');
-            } else {
-                updateStatus(`Connection failed: ${error.message}`, 'error');
-            }
-            
-            connectBtn.textContent = '🔗 Connect Wallet';
-            connectBtn.disabled = false;
+            return true;
         }
-    }
-    
-    // Setup wallet after connection
-    async function setupWallet(address) {
-        walletAddress = address;
         
-        try {
-            // Check if ethers is available
-            if (typeof ethers === 'undefined') {
-                throw new Error('Wallet library not loaded');
-            }
-            
-            // Create provider and signer
-            provider = new ethers.providers.Web3Provider(window.ethereum);
-            signer = provider.getSigner();
-            
-            // Get network
-            const network = await provider.getNetwork();
-            const networkName = network.name === 'unknown' ? 'Base' : network.name;
-            const chainId = network.chainId;
-            
-            // Check if on Base network
-            if (chainId !== 8453 && chainId !== 84531) {
-                updateStatus(`Please switch to Base network (Current: ${networkName})`, 'error');
-                document.getElementById('connectBtn').textContent = '⚠️ Wrong Network';
-                document.getElementById('connectBtn').disabled = false;
+        // Show status message
+        function showStatus(message, type = 'info') {
+            const statusEl = document.getElementById('status');
+            statusEl.textContent = message;
+            statusEl.className = 'status-' + type;
+        }
+        
+        // Connect wallet
+        async function connectWallet() {
+            if (!checkWalletAvailability()) {
                 return;
             }
             
-            // Update UI
-            const shortAddress = `${address.substring(0, 6)}...${address.substring(38)}`;
+            showStatus('Connecting to wallet...', 'info');
+            document.getElementById('connectButton').disabled = true;
             
-            document.getElementById('connectBtn').textContent = `✅ ${shortAddress}`;
-            document.getElementById('connectBtn').className = 'btn btn-success';
-            document.getElementById('connectBtn').disabled = true;
-            
-            document.getElementById('walletAddress').textContent = shortAddress;
-            document.getElementById('networkName').textContent = networkName;
-            document.getElementById('walletInfo').classList.remove('hidden');
-            
-            // Show app section
-            document.getElementById('appSection').classList.remove('hidden');
-            updateStatus('✅ Wallet connected! Click "Analyze Base Activity" to check your level', 'success');
-            
-            // Check if already has NFT
-            await checkExistingNFT();
-            
-            // Set up event listeners
-            window.ethereum.on('accountsChanged', (accounts) => {
-                if (accounts.length > 0) {
-                    setupWallet(accounts[0]);
-                } else {
-                    location.reload();
-                }
-            });
-            
-            window.ethereum.on('chainChanged', () => {
-                location.reload();
-            });
-            
-        } catch (error) {
-            console.error('Setup error:', error);
-            updateStatus(`Wallet setup failed: ${error.message}`, 'error');
-        }
-    }
-    
-    // Check if user already has NFT
-    async function checkExistingNFT() {
-        if (!provider || !walletAddress) return;
-        
-        try {
-            // Simple ABI for balance check
-            const contractABI = ['function balanceOf(address) view returns (uint256)'];
-            
-            if (typeof ethers !== 'undefined') {
-                const contract = new ethers.Contract(NFT_CONTRACT, contractABI, provider);
-                const balance = await contract.balanceOf(walletAddress);
-                hasNFT = parseInt(balance) > 0;
+            try {
+                const accounts = await window.ethereum.request({ 
+                    method: 'eth_requestAccounts' 
+                });
                 
-                if (hasNFT) {
-                    document.getElementById('mintBtn').disabled = true;
-                    document.getElementById('mintBtn').textContent = '✅ NFT Already Minted';
-                    document.getElementById('mintBtn').style.background = 'linear-gradient(90deg, #00AA00, #00CC00)';
+                if (accounts && accounts.length > 0) {
+                    const address = accounts[0];
+                    showStatus(`Connected: ${address.slice(0,6)}...${address.slice(-4)}`, 'connected');
+                    calculateLevel();
+                    
+                    // Listen for account changes
+                    window.ethereum.on('accountsChanged', (newAccounts) => {
+                        if (newAccounts.length === 0) {
+                            showStatus('Wallet disconnected', 'error');
+                            document.getElementById('levelInfo').style.display = 'none';
+                            document.getElementById('connectButton').disabled = false;
+                        } else {
+                            showStatus(`Connected: ${newAccounts[0].slice(0,6)}...${newAccounts[0].slice(-4)}`, 'connected');
+                            calculateLevel();
+                        }
+                    });
                 } else {
-                    document.getElementById('mintBtn').disabled = false;
+                    showStatus('No accounts found', 'error');
+                    document.getElementById('connectButton').disabled = false;
                 }
+            } catch (error) {
+                console.error('Wallet connection error:', error);
+                
+                if (error.code === 4001) {
+                    showStatus('Connection rejected by user', 'error');
+                } else if (error.code === -32002) {
+                    showStatus('Wallet connection already pending', 'info');
+                } else {
+                    showStatus('Connection error: ' + error.message, 'error');
+                }
+                
+                document.getElementById('connectButton').disabled = false;
             }
-        } catch (error) {
-            console.log('Error checking NFT:', error);
-            // Continue anyway
-        }
-    }
-    
-    // Analyze Base Activity
-    async function checkBaseLevel() {
-        if (!walletAddress) {
-            updateStatus('Please connect wallet first', 'error');
-            return;
         }
         
-        const checkBtn = document.getElementById('checkLevelBtn');
-        const progressSection = document.getElementById('progressSection');
-        const levelSection = document.getElementById('levelSection');
-        
-        try {
-            checkBtn.disabled = true;
-            checkBtn.textContent = 'Analyzing...';
-            updateStatus('<span class="loading"></span> Starting Base activity analysis...', 'info');
+        // Calculate Base Level
+        function calculateLevel() {
+            // Simulate level calculation (1-10)
+            const level = Math.floor(Math.random() * 10) + 1;
             
-            // Show progress
-            progressSection.classList.remove('hidden');
-            levelSection.classList.remove('hidden');
+            document.getElementById('level').textContent = level;
+            document.getElementById('levelBar').style.width = `${level * 10}%`;
             
-            // Simulate analysis with progress
-            await simulateAnalysisProgress();
-            
-            // Get real data from Base network
-            await analyzeRealBaseData();
-            
-            checkBtn.textContent = '🔄 Analyze Again';
-            checkBtn.disabled = false;
-            
-            updateStatus('✅ Base activity analyzed successfully!', 'success');
-            
-            // Enable mint button if eligible
-            if (userLevel > 0 && !hasNFT) {
-                document.getElementById('mintBtn').disabled = false;
-            }
-            
-        } catch (error) {
-            console.error('Analysis error:', error);
-            updateStatus(`Analysis failed: ${error.message}`, 'error');
-            checkBtn.textContent = '📊 Analyze Base Activity';
-            checkBtn.disabled = false;
-        }
-    }
-    
-    // Simulate analysis progress
-    async function simulateAnalysisProgress() {
-        const steps = [
-            { percent: 10, text: 'Fetching Base transactions...' },
-            { percent: 30, text: 'Analyzing NFT activity...' },
-            { percent: 50, text: 'Checking DeFi interactions...' },
-            { percent: 70, text: 'Calculating ETH volume...' },
-            { percent: 90, text: 'Determining activity patterns...' },
-            { percent: 100, text: 'Finalizing level calculation...' }
-        ];
-        
-        for (const step of steps) {
-            document.getElementById('progressFill').style.width = step.percent + '%';
-            document.getElementById('progressText').textContent = step.text;
-            await sleep(800); // Wait 0.8 seconds between steps
-        }
-        
-        // Hide progress after completion
-        setTimeout(() => {
-            document.getElementById('progressSection').classList.add('hidden');
-        }, 1000);
-    }
-    
-    // Analyze real Base data (simulated for now)
-    async function analyzeRealBaseData() {
-        if (!walletAddress) return;
-        
-        try {
-            // In production, you would:
-            // 1. Query Base RPC for transaction history
-            // 2. Use Basescan API for detailed stats
-            // 3. Check NFT marketplaces for NFT activity
-            
-            // For demo, generate realistic mock data
-            baseStats = {
-                transactionCount: Math.floor(Math.random() * 150) + 5,
-                nftCount: Math.floor(Math.random() * 25),
-                daysActive: Math.floor(Math.random() * 400) + 1,
-                volume: (Math.random() * 15 + 0.1).toFixed(2),
-                contractsUsed: Math.floor(Math.random() * 20) + 1,
-                gasUsed: (Math.random() * 5 + 0.01).toFixed(2)
-            };
-            
-            // Calculate level based on stats
-            userLevel = calculateLevel(baseStats);
-            
-            // Update UI with stats
-            updateStatsUI(baseStats, userLevel);
-            
-        } catch (error) {
-            console.error('Real analysis error:', error);
-            // Fallback to mock data
-            await analyzeMockData();
-        }
-    }
-    
-    // Mock data analysis (fallback)
-    async function analyzeMockData() {
-        const mockStats = {
-            transactionCount: Math.floor(Math.random() * 100) + 10,
-            nftCount: Math.floor(Math.random() * 15),
-            daysActive: Math.floor(Math.random() * 300) + 30,
-            volume: (Math.random() * 10 + 0.5).toFixed(2),
-            contractsUsed: Math.floor(Math.random() * 12) + 2,
-            gasUsed: (Math.random() * 3 + 0.1).toFixed(2)
-        };
-        
-        userLevel = calculateLevel(mockStats);
-        updateStatsUI(mockStats, userLevel);
-    }
-    
-    // Calculate level from stats (1-10)
-    function calculateLevel(stats) {
-        let score = 0;
-        
-        // Transaction count (max 30 points)
-        score += Math.min(stats.transactionCount / 5, 30);
-        
-        // NFT count (max 20 points)
-        score += Math.min(stats.nftCount * 2, 20);
-        
-        // Days active (max 20 points)
-        score += Math.min(stats.daysActive / 20, 20);
-        
-        // Volume (max 15 points)
-        score += Math.min(parseFloat(stats.volume) * 3, 15);
-        
-        // Contracts used (max 15 points)
-        score += Math.min(stats.contractsUsed, 15);
-        
-        // Convert to level 1-10
-        let level = Math.floor(score / 10) + 1;
-        return Math.min(Math.max(level, 1), 10);
-    }
-    
-    // Update stats UI
-    function updateStatsUI(stats, level) {
-        // Update level display
-        document.getElementById('levelValue').textContent = level;
-        document.getElementById('levelDescription').textContent = 
-            LEVEL_DESCRIPTIONS[level - 1] || 'Base Network User';
-        
-        // Update stats cards
-        document.getElementById('txCount').textContent = stats.transactionCount;
-        document.getElementById('nftCount').textContent = stats.nftCount;
-        document.getElementById('daysActive').textContent = stats.daysActive;
-        document.getElementById('volume').textContent = stats.volume + ' ETH';
-        document.getElementById('contracts').textContent = stats.contractsUsed;
-        document.getElementById('gasUsed').textContent = stats.gasUsed;
-    }
-    
-    // Mint NFT
-    async function mintNFT() {
-        if (!walletAddress || !signer) {
-            updateStatus('Please connect wallet first', 'error');
-            return;
-        }
-        
-        if (userLevel === 0) {
-            updateStatus('Please analyze your Base activity first', 'error');
-            return;
-        }
-        
-        if (hasNFT) {
-            updateStatus('You already have a Base Level NFT', 'error');
-            return;
-        }
-        
-        const mintBtn = document.getElementById('mintBtn');
-        
-        try {
-            mintBtn.disabled = true;
-            mintBtn.textContent = 'Preparing mint...';
-            updateStatus('<span class="loading"></span> Preparing NFT mint transaction...', 'info');
-            
-            // Simple contract interaction
-            // Note: This requires the actual contract ABI and mint function
-            // For now, we'll simulate the transaction
-            
-            // Simulate transaction delay
-            await sleep(2000);
-            
-            // In production:
-            // const contract = new ethers.Contract(NFT_CONTRACT, ABI, signer);
-            // const tx = await contract.mint({ value: ethers.utils.parseEther("0") });
-            // await tx.wait();
-            
-            // Mock successful mint
-            hasNFT = true;
-            mintBtn.textContent = '✅ NFT Minted!';
-            mintBtn.style.background = 'linear-gradient(90deg, #00AA00, #00CC00)';
-            
-            updateStatus('✅ NFT minted successfully! (Simulated for demo)', 'success');
-            
-        } catch (error) {
-            console.error('Minting error:', error);
-            
-            if (error.code === 4001) {
-                updateStatus('Transaction rejected by user', 'error');
-            } else if (error.message.includes('insufficient funds')) {
-                updateStatus('Insufficient ETH for gas fees', 'error');
+            let description = '';
+            if (level >= 9) {
+                description = '🏆 Elite Base User - Top contributor!';
+            } else if (level >= 7) {
+                description = '⭐ Advanced User - Great activity!';
+            } else if (level >= 5) {
+                description = '👍 Active User - Keep it up!';
+            } else if (level >= 3) {
+                description = '🌱 Growing - Getting started on Base';
             } else {
-                updateStatus(`Minting failed: ${error.message}`, 'error');
+                description = '🚀 Newcomer - Welcome to Base!';
             }
             
-            mintBtn.textContent = '🎨 Mint Base Level NFT';
-            mintBtn.disabled = false;
-        }
-    }
-    
-    // Share level
-    function shareLevel() {
-        if (userLevel === 0) {
-            updateStatus('Analyze your Base activity first to get a level', 'error');
-            return;
+            document.getElementById('levelDescription').textContent = description;
+            document.getElementById('levelInfo').style.display = 'block';
         }
         
-        const shareText = `🏆 My Base Level is ${userLevel}/10! 
-I've completed ${baseStats?.transactionCount || 0} transactions on Base.
-Check your level at: https://your-base-level.vercel.app
-#Base #BaseLevel #Web3`;
-        
-        // Try Web Share API first
-        if (navigator.share) {
-            navigator.share({
-                title: 'My Base Level',
-                text: shareText,
-                url: window.location.href
-            }).catch(() => {
-                // Fallback to clipboard
-                copyToClipboard(shareText);
-            });
-        } else {
-            // Fallback to clipboard
-            copyToClipboard(shareText);
-        }
-    }
-    
-    // Copy to clipboard
-    function copyToClipboard(text) {
-        navigator.clipboard.writeText(text)
-            .then(() => updateStatus('✅ Copied to clipboard! Share it on Twitter/Farcaster', 'success'))
-            .catch(() => updateStatus('❌ Failed to copy to clipboard', 'error'));
-    }
-    
-    // Update status message
-    function updateStatus(message, type) {
-        const statusEl = document.getElementById('status');
-        statusEl.innerHTML = message;
-        statusEl.className = `status ${type}`;
-        statusEl.classList.remove('hidden');
-    }
-    
-    // Utility: sleep function
-    function sleep(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms));
-    }
-    
-    // Check ethers availability
-    if (typeof ethers === 'undefined') {
-        console.warn('ethers.js not fully loaded - using fallback mode');
-    }
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            checkMiniApp();
+            checkWalletAvailability();
+            
+            // Auto-connect if returning and previously connected
+            if (window.ethereum && window.ethereum.selectedAddress) {
+                showStatus('Reconnecting...', 'info');
+                connectWallet();
+            }
+        });
     </script>
 </body>
 </html>
