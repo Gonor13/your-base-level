@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { BaseSepoliaTestnet, Base } from '@thirdweb-dev/chains'
 import { ThirdwebProvider } from '@thirdweb-dev/react'

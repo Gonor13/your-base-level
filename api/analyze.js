@@ -1,4 +1,4 @@
-﻿// api/analyze.js - будет работать на Vercel Serverless Functions
+// api/analyze.js - будет работать на Vercel Serverless Functions
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });

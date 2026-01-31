@@ -1,4 +1,4 @@
-﻿{
+{
   "name": "your-base-level",
   "version": "0.1.0",
   "private": true,
@@ -9,10 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@thirdweb-dev/chains": "0.1.91",
-    "@thirdweb-dev/react": "4.12.2",
-    "@thirdweb-dev/sdk": "4.12.2",
-    "ethers": "5.7.2",
     "next": "14.0.4",
     "react": "18.2.0",
     "react-dom": "18.2.0"

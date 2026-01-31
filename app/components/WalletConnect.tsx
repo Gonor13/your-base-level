@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { ConnectWallet } from '@thirdweb-dev/react'
 

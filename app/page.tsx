@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import WalletConnect from './components/WalletConnect'
 import { useAddress } from '@thirdweb-dev/react'
