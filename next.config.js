@@ -1,6 +1,14 @@
 ﻿/** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  // Отключаем проверки для сборки
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  // Для thirdweb
   webpack: (config, { isServer }) => {
     if (!isServer) {
       config.resolve.fallback = {
@@ -9,26 +17,8 @@ const nextConfig = {
         net: false,
         tls: false,
       };
-      
-      // Добавляем alias для исправления импорта ethers
-      config.resolve.alias = {
-        ...config.resolve.alias,
-        'ethers/lib/utils': require.resolve('ethers/lib/utils'),
-      };
     }
-    
-    // Транспилируем thirdweb
-    config.module = config.module || {};
-    config.module.rules = config.module.rules || [];
-    
     return config;
-  },
-  // Отключаем проверку типов во время сборки для ускорения
-  typescript: {
-    ignoreBuildErrors: true,
-  },
-  eslint: {
-    ignoreDuringBuilds: true,
   },
 };
 
