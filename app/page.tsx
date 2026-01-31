@@ -20,16 +20,16 @@ const levelNames = [
 ]
 
 const levelColors = [
-  '#9E9E9E', // Gray
-  '#4CAF50', // Green
-  '#2196F3', // Blue
-  '#3F51B5', // Indigo
-  '#9C27B0', // Purple
-  '#FF5722', // Orange
-  '#FF9800', // Amber
-  '#FFC107', // Yellow
-  '#FFEB3B', // Lime
-  '#0052FF'  // Base Blue
+  '#9E9E9E',
+  '#4CAF50',
+  '#2196F3',
+  '#3F51B5',
+  '#9C27B0',
+  '#FF5722',
+  '#FF9800',
+  '#FFC107',
+  '#FFEB3B',
+  '#0052FF'
 ]
 
 interface UserData {
@@ -42,7 +42,7 @@ interface UserData {
 export default function Home() {
   const [connected, setConnected] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [userData, setUserData] = useState<UserData | null>(null)
+  const [userData, setUserData] = useState(null)
   const [hasMinted, setHasMinted] = useState(false)
 
   useEffect(() => {
@@ -70,25 +70,20 @@ export default function Home() {
     }
   }
 
-  const calculateLevel = async (address: string) => {
+  const calculateLevel = async (address) => {
     setLoading(true)
-    
-    // Mock data for demo
     const mockLevel = Math.floor(Math.random() * 10) + 1
-    
     setUserData({
       address: address.slice(0, 6) + '...' + address.slice(-4),
       level: mockLevel,
       name: levelNames[mockLevel - 1],
       color: levelColors[mockLevel - 1]
     })
-    
     setLoading(false)
   }
 
   const handleMint = async () => {
     if (!userData) return
-    
     try {
       const provider = new ethers.BrowserProvider(window.ethereum)
       const signer = await provider.getSigner()
@@ -97,7 +92,6 @@ export default function Home() {
         ['function mint() public'],
         signer
       )
-      
       const tx = await contract.mint()
       await tx.wait()
       setHasMinted(true)
@@ -110,9 +104,7 @@ export default function Home() {
 
   const handleShare = () => {
     if (!userData) return
-    
-    const shareText = My Base Level is \nCheck yours\nhttps://your-base-level.vercel.app
-    
+    const shareText = 'My Base Level is ' + userData.level + '\nCheck yours\nhttps://your-base-level.vercel.app'
     if (navigator.share) {
       navigator.share({ 
         title: 'Base Level', 
