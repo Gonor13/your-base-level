@@ -15,7 +15,7 @@
     "subtitle": "Discover your Base status",
     "description": "Calculate your unique Base Level (1-10) based on activity and mint it as an NFT.",
     "screenshotUrls": ["https://your-base-level.vercel.app/preview.png"],
-    "primaryCategory": "art-creativity",
+    "primaryCategory": "social",
     "tags": ["base", "nft", "level", "status", "crypto"],
     "heroImageUrl": "https://your-base-level.vercel.app/preview.png",
     "tagline": "What's your Base Level?",
