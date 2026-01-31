@@ -8,6 +8,7 @@ export interface LevelInfo {
   color: string;
   requirements: string[];
   progress: number; // 0-100
+  nextLevelRequirements?: string[]; // ДОБАВЛЕНО
 }
 
 export function calculateLevel(stats: WalletStats): LevelInfo {
@@ -15,15 +16,17 @@ export function calculateLevel(stats: WalletStats): LevelInfo {
   const { level, progress } = calculateLevelFromStats(stats);
   
   const levelData = getLevelData(level);
+  const nextLevelData = getLevelData(level + 1);
   
   return {
     level,
-    title: \`\${levelData.icon} \${levelData.title} - Level \${level}\`,
-    description: \`\${levelData.description} | Score: \${stats.activityScore}\`,
+    title: `${levelData.icon} ${levelData.title} - Level ${level}`,
+    description: `${levelData.description} | Score: ${stats.activityScore}`,
     icon: levelData.icon,
     color: levelData.color,
     requirements: levelData.requirements,
-    progress
+    progress,
+    nextLevelRequirements: nextLevelData ? nextLevelData.requirements : ["Max level reached!"]
   };
 }
 

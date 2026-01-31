@@ -65,7 +65,7 @@ export default function Home() {
       alert("Используются демо-данные");
       // Создаём демо-данные
       const demoStats = {
-        address: \`\${address.substring(0, 6)}...\${address.substring(address.length - 4)}\`,
+        address: `${address.substring(0, 6)}...${address.substring(address.length - 4)}`,
         balance: "0.0217",
         transactionCount: 1223,
         isContract: false,
@@ -95,7 +95,7 @@ export default function Home() {
   // Минт NFT
   const mintNFT = () => {
     if (!wallet) return;
-    alert(\`🎉 NFT будет заминчен для:\n\n\${wallet}\n\nLevel: \${levelInfo?.level || "N/A"}\n\nContract: 0xa61878Cd14f87F22623A44Cf54D8F2F0a0E6c11a\`);
+    alert(`🎉 NFT будет заминчен для:\n\n${wallet}\n\nLevel: ${levelInfo?.level || "N/A"}\n\nContract: 0xa61878Cd14f87F22623A44Cf54D8F2F0a0E6c11a`);
   };
   
   // При загрузке показываем приветственный экран
@@ -247,7 +247,7 @@ export default function Home() {
                         <div className="w-full bg-green-200 rounded-full h-2">
                           <div 
                             className="bg-green-600 h-2 rounded-full transition-all duration-500"
-                            style={{ width: \`\${levelInfo.progress}%\` }}
+                            style={{ width: `${levelInfo.progress}%` }}
                           ></div>
                         </div>
                       </div>
@@ -372,7 +372,7 @@ export default function Home() {
                   <h4 className="font-bold text-lg mb-4">⚡ Quick Actions</h4>
                   <div className="space-y-3">
                     <button 
-                      onClick={() => window.open(\`https://basescan.org/address/\${wallet}\`, '_blank')}
+                      onClick={() => window.open(`https://basescan.org/address/${wallet}`, '_blank')}
                       className="w-full bg-blue-50 text-blue-700 py-3 rounded-lg hover:bg-blue-100 transition"
                     >
                       📊 View on BaseScan
@@ -410,3 +410,4 @@ export default function Home() {
     </div>
   );
 }
+
