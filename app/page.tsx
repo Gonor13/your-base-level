@@ -111,7 +111,7 @@ export default function Home() {
   const handleShare = () => {
     if (!userData) return
     
-    const shareText = My Base Level is  🔵\nCheck yours ↓\nhttps://your-base-level.vercel.app
+    const shareText = My Base Level is \nCheck yours\nhttps://your-base-level.vercel.app
     
     if (navigator.share) {
       navigator.share({ 
@@ -187,7 +187,7 @@ export default function Home() {
             disabled={hasMinted}
             className={w-full py-3 rounded-lg font-semibold }
           >
-            {hasMinted ? '✅ Already Minted' : 'Mint as NFT'}
+            {hasMinted ? 'Already Minted' : 'Mint as NFT'}
           </motion.button>
         </div>
 
