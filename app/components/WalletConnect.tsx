@@ -1,125 +1,78 @@
-import { WalletStats } from './walletAnalyzer';
+﻿'use client'
+
+import { useState, useEffect } from 'react'
+import { ethers } from 'ethers'
 
 export interface LevelInfo {
-  level: number;
-  title: string;
-  description: string;
-  icon: string;
-  color: string;
-  requirements: string[];
-  progress: number; // 0-100
-  nextLevelRequirements?: string[]; // ??????????????????
+  level: number
+  name: string
+  color: string
 }
 
-export function calculateLevel(stats: WalletStats): LevelInfo {
-  // ???????????????????????? ?????????????? ???? ???????????? ???????? ????????????
-  const { level, progress } = calculateLevelFromStats(stats);
-  
-  const levelData = getLevelData(level);
-  const nextLevelData = getLevelData(level + 1);
-  
-  return {
-    level,
-    title: `${levelData.icon} ${levelData.title} - Level ${level}`,
-    description: `${levelData.description} | Score: ${stats.activityScore}`,
-    icon: levelData.icon,
-    color: levelData.color,
-    requirements: levelData.requirements,
-    progress,
-    nextLevelRequirements: nextLevelData ? nextLevelData.requirements : ["Max level reached!"]
-  };
+interface WalletConnectProps {
+  onConnect: (address: string, levelInfo: LevelInfo) => void
 }
 
-function calculateLevelFromStats(stats: WalletStats): { level: number; progress: number } {
-  // ?????????????? ?????????????? ??????????????
-  const balanceScore = Math.min(parseFloat(stats.balance) * 20, 40);
-  const txScore = Math.min(stats.transactionCount * 0.2, 30);
-  const activityScore = stats.activityScore * 0.3;
-  
-  const totalScore = balanceScore + txScore + activityScore;
-  
-  // ???????????? ???? 1 ???? 10
-  let level = 1;
-  if (totalScore > 90) level = 10;
-  else if (totalScore > 80) level = 9;
-  else if (totalScore > 70) level = 8;
-  else if (totalScore > 60) level = 7;
-  else if (totalScore > 50) level = 6;
-  else if (totalScore > 40) level = 5;
-  else if (totalScore > 30) level = 4;
-  else if (totalScore > 20) level = 3;
-  else if (totalScore > 10) level = 2;
-  
-  // ???????????????? ???? ???????????????????? ????????????
-  const levelThresholds = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90];
-  const currentThreshold = levelThresholds[level - 1];
-  const nextThreshold = levelThresholds[level] || 100;
-  const progress = Math.min(100, ((totalScore - currentThreshold) / (nextThreshold - currentThreshold)) * 100);
-  
-  return { level, progress: Math.round(progress) };
-}
+const levelNames = ['Beginner', 'Explorer', 'Rising', 'Active', 'Established', 'Veteran', 'Elite', 'Master', 'Legend', 'OG']
+const levelColors = ['#9E9E9E', '#4CAF50', '#2196F3', '#3F51B5', '#9C27B0', '#FF5722', '#FF9800', '#FFC107', '#FFEB3B', '#0052FF']
 
-function getLevelData(level: number) {
-  const levels = [
-    {
-      level: 1, title: "Newcomer", icon: "????", color: "gray",
-      description: "Welcome to Base!",
-      requirements: ["Make first transaction", "Have any balance"]
-    },
-    {
-      level: 2, title: "Beginner", icon: "????", color: "green",
-      description: "Getting started",
-      requirements: ["5+ transactions", "0.01+ ETH balance"]
-    },
-    {
-      level: 3, title: "Explorer", icon: "????", color: "blue",
-      description: "Discovering Base",
-      requirements: ["15+ transactions", "Interact with 2+ dApps"]
-    },
-    {
-      level: 4, title: "Active", icon: "???", color: "purple",
-      description: "Regular activity",
-      requirements: ["30+ transactions", "0.1+ ETH balance"]
-    },
-    {
-      level: 5, title: "Regular", icon: "????", color: "orange",
-      description: "Frequent user",
-      requirements: ["50+ transactions", "0.5+ ETH balance"]
-    },
-    {
-      level: 6, title: "Contributor", icon: "????", color: "teal",
-      description: "Valuable member",
-      requirements: ["100+ transactions", "Use DeFi protocols"]
-    },
-    {
-      level: 7, title: "Influencer", icon: "????", color: "yellow",
-      description: "Network impact",
-      requirements: ["200+ transactions", "1+ ETH balance"]
-    },
-    {
-      level: 8, title: "Veteran", icon: "????", color: "red",
-      description: "Base expert",
-      requirements: ["500+ transactions", "5+ ETH balance"]
-    },
-    {
-      level: 9, title: "Champion", icon: "????", color: "gold",
-      description: "Top contributor",
-      requirements: ["1000+ transactions", "Governance participation"]
-    },
-    {
-      level: 10, title: "Legend", icon: "???????", color: "rainbow",
-      description: "Hall of fame",
-      requirements: ["2000+ transactions", "Ecosystem leadership"]
+export default function WalletConnect({ onConnect }: WalletConnectProps) {
+  const [connected, setConnected] = useState(false)
+  const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    checkConnection()
+  }, [])
+
+  const checkConnection = async () => {
+    if (typeof window.ethereum !== 'undefined') {
+      const provider = new ethers.BrowserProvider(window.ethereum)
+      const accounts = await provider.listAccounts()
+      if (accounts.length > 0) {
+        setConnected(true)
+        const address = accounts[0].address
+        calculateLevel(address)
+      }
     }
-  ];
-  
-  return levels[level - 1] || levels[0];
-}
+  }
 
-// ?????????????? ?????? ?????????????? ?????????????????? ????????????
-export async function getWalletLevel(address: string): Promise<LevelInfo> {
-  const { analyzeWallet } = await import('./walletAnalyzer');
-  const stats = await analyzeWallet(address);
-  return calculateLevel(stats);
-}
+  const connectWallet = async () => {
+    try {
+      await window.ethereum.request({ method: 'eth_requestAccounts' })
+      checkConnection()
+    } catch (error) {
+      console.error('Connection error:', error)
+    }
+  }
 
+  const calculateLevel = async (address: string) => {
+    setLoading(true)
+    
+    // Mock calculation
+    const mockLevel = Math.floor(Math.random() * 10) + 1
+    
+    onConnect(address, {
+      level: mockLevel,
+      name: levelNames[mockLevel - 1],
+      color: levelColors[mockLevel - 1]
+    })
+    
+    setLoading(false)
+  }
+
+  if (connected) {
+    return null
+  }
+
+  return (
+    <div className="min-h-screen bg-black flex items-center justify-center">
+      <button
+        onClick={connectWallet}
+        disabled={loading}
+        className="px-8 py-4 bg-[#0052FF] text-white rounded-lg font-bold text-lg hover:bg-[#0044cc] transition disabled:opacity-50"
+      >
+        {loading ? 'Connecting...' : 'Connect Wallet'}
+      </button>
+    </div>
+  )
+}
