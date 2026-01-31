@@ -1,13 +1,8 @@
-﻿import './globals.css'
+import './globals.css'
 
 export const metadata = {
   title: 'Your Base Level',
   description: 'Discover your status in the Base ecosystem',
-  openGraph: {
-    title: 'Your Base Level',
-    description: 'Discover your status in the Base ecosystem',
-    images: ['https://your-base-level.vercel.app/preview.png'],
-  },
 }
 
 export default function RootLayout({ children }) {
@@ -15,7 +10,6 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <head>
         <meta name="fc:miniapp" content="Your Base Level" />
-        <meta name="base:app_id" content="697845b888e3bac59cf3dab8" />
         <meta property="og:title" content="Your Base Level" />
         <meta property="og:description" content="Discover your status in the Base ecosystem" />
         <meta property="og:image" content="https://your-base-level.vercel.app/preview.png" />

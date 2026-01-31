@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useState, useEffect } from 'react'
 import { ethers } from 'ethers'
@@ -113,7 +113,7 @@ export default function Home() {
             Share my Base Level
           </button>
 
-          <button onClick={handleMint} disabled={hasMinted} className={w-full py-3 rounded-lg font-semibold }>
+          <button onClick={handleMint} disabled={hasMinted} className={'w-full py-3 rounded-lg font-semibold ' + (hasMinted ? 'bg-gray-700 text-gray-400 cursor-not-allowed' : 'bg-white text-black hover:bg-gray-200')}>
             {hasMinted ? 'Already Minted' : 'Mint as NFT'}
           </button>
         </div>
