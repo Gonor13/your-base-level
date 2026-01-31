@@ -1,44 +1,34 @@
-﻿import { WalletStats } from './walletAnalyzer';
-
-export interface LevelInfo {
-  level: number;
-  title: string;
-  description: string;
-  icon: string;
-  color: string;
-}
-
-export function calculateLevel(stats: WalletStats): LevelInfo {
-  const level = stats.level;
+﻿// ПРОСТОЙ расчёт уровня (фиксированный для теста)
+export function calculateLevel(stats: any): { level: number; title: string } {
+  const score = stats.transactionCount * 0.1 + parseFloat(stats.balance) * 10 + stats.activeDays * 0.5;
   
-  const levelData = [
-    { level: 1, title: "Newcomer", icon: "🚀", color: "gray", desc: "Welcome to Base!" },
-    { level: 2, title: "Beginner", icon: "🌱", color: "green", desc: "Getting started" },
-    { level: 3, title: "Explorer", icon: "🧭", color: "blue", desc: "Discovering Base" },
-    { level: 4, title: "Active", icon: "⚡", color: "purple", desc: "Regular user" },
-    { level: 5, title: "Regular", icon: "🔥", color: "orange", desc: "Frequent activity" },
-    { level: 6, title: "Contributor", icon: "💎", color: "teal", desc: "Valuable member" },
-    { level: 7, title: "Influencer", icon: "🌟", color: "yellow", desc: "Network impact" },
-    { level: 8, title: "Veteran", icon: "🏆", color: "red", desc: "Base expert" },
-    { level: 9, title: "Champion", icon: "👑", color: "gold", desc: "Top contributor" },
-    { level: 10, title: "Legend", icon: "🏛️", color: "rainbow", desc: "Hall of fame" }
+  let level = 5;
+  if (score > 200) level = 10;
+  else if (score > 150) level = 9;
+  else if (score > 100) level = 8;
+  else if (score > 80) level = 7;
+  else if (score > 60) level = 6;
+  else if (score > 40) level = 5;
+  else if (score > 20) level = 4;
+  else if (score > 10) level = 3;
+  else if (score > 5) level = 2;
+  else level = 1;
+  
+  const titles = [
+    "🚀 Newcomer",
+    "🌱 Beginner", 
+    "📚 Explorer",
+    "⚡ Active",
+    "🔥 Regular",
+    "💎 Contributor",
+    "🌟 Influencer",
+    "🏆 Veteran",
+    "👑 Champion",
+    "🏛️ Legend"
   ];
   
-  const data = levelData[level - 1] || levelData[0];
-  
   return {
-    level: data.level,
-    title: `${data.icon} ${data.title} - Level ${data.level}`,
-    description: `${data.desc} | Balance: ${stats.balance} ETH | TXs: ${stats.transactionCount}`,
-    icon: data.icon,
-    color: data.color
+    level,
+    title: titles[level - 1]
   };
-}
-
-// Альтернативная функция для прямого получения уровня по адресу
-export async function getWalletLevel(address: string): Promise<LevelInfo> {
-  // Импортируем динамически, чтобы избежать циклических зависимостей
-  const { analyzeWallet } = await import('./walletAnalyzer');
-  const stats = await analyzeWallet(address);
-  return calculateLevel(stats);
 }
