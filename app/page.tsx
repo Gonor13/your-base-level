@@ -6,38 +6,9 @@ import { motion } from 'framer-motion'
 
 const contractAddress = '0xa61878Cd14f87F22623A44Cf54D8F2F0a0E6c11a'
 
-const levelNames = [
-  'Beginner',
-  'Explorer',
-  'Rising',
-  'Active',
-  'Established',
-  'Veteran',
-  'Elite',
-  'Master',
-  'Legend',
-  'OG'
-]
+const levelNames = ['Beginner', 'Explorer', 'Rising', 'Active', 'Established', 'Veteran', 'Elite', 'Master', 'Legend', 'OG']
 
-const levelColors = [
-  '#9E9E9E',
-  '#4CAF50',
-  '#2196F3',
-  '#3F51B5',
-  '#9C27B0',
-  '#FF5722',
-  '#FF9800',
-  '#FFC107',
-  '#FFEB3B',
-  '#0052FF'
-]
-
-interface UserData {
-  address: string
-  level: number
-  name: string
-  color: string
-}
+const levelColors = ['#9E9E9E', '#4CAF50', '#2196F3', '#3F51B5', '#9C27B0', '#FF5722', '#FF9800', '#FFC107', '#FFEB3B', '#0052FF']
 
 export default function Home() {
   const [connected, setConnected] = useState(false)
@@ -87,11 +58,7 @@ export default function Home() {
     try {
       const provider = new ethers.BrowserProvider(window.ethereum)
       const signer = await provider.getSigner()
-      const contract = new ethers.Contract(
-        contractAddress,
-        ['function mint() public'],
-        signer
-      )
+      const contract = new ethers.Contract(contractAddress, ['function mint() public'], signer)
       const tx = await contract.mint()
       await tx.wait()
       setHasMinted(true)
@@ -106,10 +73,7 @@ export default function Home() {
     if (!userData) return
     const shareText = 'My Base Level is ' + userData.level + '\nCheck yours\nhttps://your-base-level.vercel.app'
     if (navigator.share) {
-      navigator.share({ 
-        title: 'Base Level', 
-        text: shareText 
-      })
+      navigator.share({ title: 'Base Level', text: shareText })
     } else {
       navigator.clipboard.writeText(shareText)
       alert('Link copied to clipboard!')
@@ -119,12 +83,7 @@ export default function Home() {
   if (!connected) {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center">
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={connectWallet}
-          className="px-8 py-4 bg-[#0052FF] text-white rounded-lg font-bold text-lg"
-        >
+        <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={connectWallet} className="px-8 py-4 bg-[#0052FF] text-white rounded-lg font-bold text-lg">
           Connect Wallet
         </motion.button>
       </div>
@@ -147,13 +106,11 @@ export default function Home() {
     )
   }
 
+  const buttonClass = hasMinted ? 'w-full py-3 bg-gray-700 text-gray-400 rounded-lg font-semibold cursor-not-allowed' : 'w-full py-3 bg-white text-black rounded-lg font-semibold hover:bg-gray-200 transition'
+
   return (
     <div className="min-h-screen bg-black flex items-center justify-center p-4">
-      <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        className="w-full max-w-md bg-gradient-to-br from-gray-900 to-black rounded-2xl p-8 border border-gray-800"
-      >
+      <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="w-full max-w-md bg-gradient-to-br from-gray-900 to-black rounded-2xl p-8 border border-gray-800">
         <div className="text-center mb-8">
           <h1 className="text-5xl font-bold mb-2" style={{ color: userData.color }}>
             {userData.level}
@@ -163,22 +120,11 @@ export default function Home() {
         </div>
 
         <div className="space-y-4">
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            onClick={handleShare}
-            className="w-full py-3 bg-[#0052FF] text-white rounded-lg font-semibold hover:bg-[#0044cc] transition"
-          >
+          <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} onClick={handleShare} className="w-full py-3 bg-[#0052FF] text-white rounded-lg font-semibold hover:bg-[#0044cc] transition">
             Share my Base Level
           </motion.button>
 
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            onClick={handleMint}
-            disabled={hasMinted}
-            className={w-full py-3 rounded-lg font-semibold }
-          >
+          <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} onClick={handleMint} disabled={hasMinted} className={buttonClass}>
             {hasMinted ? 'Already Minted' : 'Mint as NFT'}
           </motion.button>
         </div>
