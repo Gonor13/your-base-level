@@ -1,9 +1,15 @@
-/** @type {import('next').NextConfig} */
+﻿/** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
-  images: {
-    unoptimized: true,
+  webpack: (config) => {
+    config.resolve.fallback = {
+      ...config.resolve.fallback,
+      fs: false,
+      net: false,
+      tls: false,
+    };
+    return config;
   },
   typescript: {
     ignoreBuildErrors: true,
@@ -11,6 +17,6 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-}
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;
